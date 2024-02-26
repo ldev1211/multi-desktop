@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/path_provider_foundation-master.dia",
+    "emit-module-dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/path_provider_foundation-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/path_provider_foundation-master-emit-module.dia",
+    "swift-dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/path_provider_foundation-master.swiftdeps"
+  },
+  "/Users/ldev/.pub-cache/hosted/pub.dev/path_provider_foundation-2.3.2/darwin/Classes/messages.g.swift" : {
+    "const-values" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.swiftconstvalues",
+    "dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.d",
+    "diagnostics" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.o",
+    "llvm-bc" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.bc",
+    "object" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.o",
+    "swift-dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g.swiftdeps",
+    "swiftmodule" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/messages.g~partial.swiftmodule"
+  },
+  "/Users/ldev/.pub-cache/hosted/pub.dev/path_provider_foundation-2.3.2/darwin/Classes/PathProviderPlugin.swift" : {
+    "const-values" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.swiftconstvalues",
+    "dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.d",
+    "diagnostics" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.o",
+    "llvm-bc" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.bc",
+    "object" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.o",
+    "swift-dependencies" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin.swiftdeps",
+    "swiftmodule" : "/Users/ldev/FlutterProject/multi_desktop/build/macos/Build/Intermediates.noindex/Pods.build/Debug/path_provider_foundation.build/Objects-normal/x86_64/PathProviderPlugin~partial.swiftmodule"
+  }
+}

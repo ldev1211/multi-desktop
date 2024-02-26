@@ -1,15 +1,26 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
 import 'package:multi_desktop/network/route/apiservice.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 
 late ApiService service;
-const String url = 'localhost:3000/delegation_chief_role';
+const String url = 'http://192.168.1.15:3000/delegation_chief_role';
 
 void main() async {
-  service = ApiService(dio.Dio(), baseUrl: url);
+  WidgetsFlutterBinding.ensureInitialized();
   await PrefUtil.init();
-  runApp(const MyApp());
+  service = ApiService(dio.Dio(), baseUrl: url);
+  bool isLoggedIn = PrefUtil.instance.getBool("accessToken") != null;
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
+      home: const LoginPage(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

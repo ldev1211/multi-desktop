@@ -1,0 +1,179 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_$s19file_selector_macos20FileSelectorApiCodecC6sharedACvau",
+            "_$s19file_selector_macos12ViewProviderTL",
+            "_$s19file_selector_macos20FileSelectorApiSetupCACycfC",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypesAA07AllowedI0VSgvg",
+            "_$s19file_selector_macos16SavePanelOptionsV6promptSSSgvs",
+            "_$s19file_selector_macos12AllowedTypesV04mimeE0SaySSSgGvs",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvMTq",
+            "_$s19file_selector_macos15FileSelectorApiMp",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypes13directoryPath20nameFieldStringValue6promptAcA07AllowedI0VSg_SSSgA2KtcfcfA1_",
+            "_$s19file_selector_macos16SavePanelOptionsV6promptSSSgvg",
+            "_$s19file_selector_macos16OpenPanelOptionsV14canChooseFilesSbvM",
+            "_$s19file_selector_macos12AllowedTypesVN",
+            "_$s19file_selector_macos20FileSelectorApiSetupC5codecSo27FlutterStandardMessageCodecCvgZ",
+            "_$s19file_selector_macos12AllowedTypesV4utisSaySSSgGvg",
+            "_$s19file_selector_macos16OpenPanelOptionsV8fromListyACSgSayypSgGFZ",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvpMV",
+            "_$s19file_selector_macos18FileSelectorPluginC16displaySavePanel7options10completionyAA0hI7OptionsV_ys6ResultOySSSgs5Error_pGctF",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypes13directoryPath20nameFieldStringValue6promptAcA07AllowedI0VSg_SSSgA2KtcfcfA2_",
+            "_$s19file_selector_macos12AllowedTypesVMa",
+            "_$s19file_selector_macos16SavePanelOptionsV6promptSSSgvpfi",
+            "_$s19file_selector_macos16SavePanelOptionsV6toListSayypSgGyF",
+            "_$s19file_selector_macos16SavePanelOptionsVMa",
+            "_$s19file_selector_macos16OpenPanelOptionsV14canChooseFilesSbvg",
+            "_$s19file_selector_macos18FileSelectorPluginCAA0dE3ApiAAMc",
+            "_$s19file_selector_macos18FileSelectorPluginC10openMethod33_DED4EE33D58DF5954824CAE0A7E4FF82LLSSvpfi",
+            "_$s19file_selector_macos12AllowedTypesV10extensionsSaySSSgGvs",
+            "_$s19file_selector_macos16SavePanelOptionsV20nameFieldStringValueSSSgvM",
+            "_$s19file_selector_macos16SavePanelOptionsV20nameFieldStringValueSSSgvs",
+            "_$s19file_selector_macos16OpenPanelOptionsV23allowsMultipleSelectionSbvs",
+            "_$s19file_selector_macos20FileSelectorApiSetupCN",
+            "_$s19file_selector_macos18FileSelectorPluginC10saveMethod33_DED4EE33D58DF5954824CAE0A7E4FF82LLSSvpfi",
+            "_$s19file_selector_macos20FileSelectorApiSetupC5setUp15binaryMessenger3apiySo013FlutterBinaryK0_p_AA0deF0_pSgtFZ",
+            "_$s19file_selector_macos12AllowedTypesV10extensionsSaySSSgGvpMV",
+            "_$s19file_selector_macos16SavePanelOptionsV8fromListyACSgSayypSgGFZ",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvsTq",
+            "_$s19file_selector_macos16SavePanelOptionsVN",
+            "_$s19file_selector_macos15PanelControllerTL",
+            "_$s19file_selector_macos18FileSelectorPluginCAA0dE3ApiAAWP",
+            "_file_selector_macosVersionString",
+            "_$s19file_selector_macos16OpenPanelOptionsVMa",
+            "_$s19file_selector_macos16OpenPanelOptionsV04baseF0AA04SaveeF0VvpMV",
+            "_$s19file_selector_macos18FileSelectorPluginCfD",
+            "_$s19file_selector_macos12AllowedTypesVMn",
+            "_$s19file_selector_macos16OpenPanelOptionsV23allowsMultipleSelection20canChooseDirectories0jK5Files04baseF0ACSb_S2bAA04SaveeF0VtcfC",
+            "_$s19file_selector_macos18FileSelectorPluginC8register4withySo07FlutterF9Registrar_p_tFZ",
+            "_$s19file_selector_macos16SavePanelOptionsV20nameFieldStringValueSSSgvpMV",
+            "_$s19file_selector_macos20FileSelectorApiCodecCN",
+            "_$s19file_selector_macos12AllowedTypesV8fromListyACSgSayypSgGFZ",
+            "_$s19file_selector_macos18FileSelectorPluginCMn",
+            "_$s19file_selector_macos20FileSelectorApiSetupCACycfCTq",
+            "_$s19file_selector_macos20FileSelectorApiCodecCMn",
+            "_Swift50Overrides",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvpfi",
+            "_$s19file_selector_macos20FileSelectorApiCodecC6sharedACvpZ",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypes13directoryPath20nameFieldStringValue6promptAcA07AllowedI0VSg_SSSgA2KtcfC",
+            "_$s19file_selector_macos12AllowedTypesV4utisSaySSSgGvpMV",
+            "_$s19file_selector_macos16SavePanelOptionsV20nameFieldStringValueSSSgvpfi",
+            "_$s19file_selector_macos16OpenPanelOptionsV20canChooseDirectoriesSbvg",
+            "_$s19file_selector_macos20FileSelectorApiSetupCfD",
+            "_$s19file_selector_macos18FileSelectorPluginC12viewProvider15panelControllerAcA04ViewH0_p_AA05PanelJ0_ptcfC",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvs",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypes13directoryPath20nameFieldStringValue6promptAcA07AllowedI0VSg_SSSgA2KtcfcfA_",
+            "_$s19file_selector_macos16SavePanelOptionsV6promptSSSgvpMV",
+            "_$s19file_selector_macos20FileSelectorApiSetupCMm",
+            "_$s19file_selector_macos16OpenPanelOptionsV04baseF0AA04SaveeF0Vvg",
+            "_$s19file_selector_macos16SavePanelOptionsV6promptSSSgvM",
+            "_$s19file_selector_macos12AllowedTypesV6toListSayypSgGyF",
+            "_$s19file_selector_macos16SavePanelOptionsV13directoryPathSSSgvM",
+            "_$s19file_selector_macos12AllowedTypesV10extensionsSaySSSgGvM",
+            "_$s19file_selector_macos16OpenPanelOptionsV23allowsMultipleSelectionSbvpMV",
+            "_$s19file_selector_macos16OpenPanelOptionsV20canChooseDirectoriesSbvs",
+            "_$s19file_selector_macos16OpenPanelOptionsV23allowsMultipleSelectionSbvg",
+            "_$s19file_selector_macos18FileSelectorPluginC16displayOpenPanel7options10completionyAA0hI7OptionsV_ys6ResultOySaySSSgGs5Error_pGctF",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvgTq",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypes13directoryPath20nameFieldStringValue6promptAcA07AllowedI0VSg_SSSgA2KtcfcfA0_",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypesAA07AllowedI0VSgvs",
+            "_$s19file_selector_macos16OpenPanelOptionsV20canChooseDirectoriesSbvM",
+            "_$s19file_selector_macos18FileSelectorPluginC16displaySavePanel7options10completionyAA0hI7OptionsV_ys6ResultOySSSgs5Error_pGctFTq",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvg",
+            "_$s19file_selector_macos20FileSelectorApiSetupCACycfc",
+            "_$s19file_selector_macos20FileSelectorApiCodecCACycfc",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvM",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypesAA07AllowedI0VSgvpMV",
+            "_$s19file_selector_macos18FileSelectorPluginC9configure33_DED4EE33D58DF5954824CAE0A7E4FF82LL9openPanel4withySo06NSOpenQ0C_AA04OpenQ7OptionsVtF",
+            "_$s19file_selector_macos18FileSelectorPluginC12viewProvider15panelControllerAcA04ViewH0_p_AA05PanelJ0_ptcfCTq",
+            "_$s19file_selector_macos12AllowedTypesV10extensions04mimeE04utisACSaySSSgG_A2HtcfC",
+            "_Swift51Overrides",
+            "_$s19file_selector_macos18FileSelectorPluginC16forceLegacyTypesSbvpWvd",
+            "_$s19file_selector_macos18FileSelectorPluginCACycfC",
+            "_$s19file_selector_macos18FileSelectorPluginCN",
+            "_$s19file_selector_macos16OpenPanelOptionsV04baseF0AA04SaveeF0Vvs",
+            "_$s19file_selector_macos12AllowedTypesV10extensionsSaySSSgGvg",
+            "_$s19file_selector_macos18FileSelectorPluginC19openDirectoryMethod33_DED4EE33D58DF5954824CAE0A7E4FF82LLSSvpfi",
+            "_$s19file_selector_macos20FileSelectorApiSetupCMa",
+            "_$s19file_selector_macos15FileSelectorApiTL",
+            "_$s19file_selector_macos16OpenPanelOptionsV04baseF0AA04SaveeF0VvM",
+            "_$s19file_selector_macos15PanelControllerMp",
+            "_$s19file_selector_macos18FileSelectorPluginC9configure33_DED4EE33D58DF5954824CAE0A7E4FF82LL5panel4withySo11NSSavePanelC_AA04SaveS7OptionsVtF",
+            "_$s19file_selector_macos12AllowedTypesV04mimeE0SaySSSgGvg",
+            "_$s19file_selector_macos16OpenPanelOptionsVN",
+            "_$s19file_selector_macos18FileSelectorPluginC16displayOpenPanel7options10completionyAA0hI7OptionsV_ys6ResultOySaySSSgGs5Error_pGctFTq",
+            "_$s19file_selector_macos12AllowedTypesV4utisSaySSSgGvM",
+            "_$s19file_selector_macos16SavePanelOptionsV13directoryPathSSSgvg",
+            "_$s19file_selector_macos18FileSelectorPluginCMa",
+            "_$s19file_selector_macos16OpenPanelOptionsV14canChooseFilesSbvs",
+            "_$s19file_selector_macos18FileSelectorPluginCACycfc",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypesAA07AllowedI0VSgvpfi",
+            "_$s19file_selector_macos16SavePanelOptionsVACycfC",
+            "_$s19file_selector_macos16OpenPanelOptionsVMn",
+            "_$s19file_selector_macos20FileSelectorApiCodecCACycfC",
+            "_$s19file_selector_macos16OpenPanelOptionsV20canChooseDirectoriesSbvpMV",
+            "_$s19file_selector_macos16SavePanelOptionsV13directoryPathSSSgvpfi",
+            "_$s19file_selector_macos20FileSelectorApiCodecC6sharedACvgZ",
+            "_$s19file_selector_macos20FileSelectorApiSetupCfd",
+            "_file_selector_macosVersionNumber",
+            "_$s19file_selector_macos16OpenPanelOptionsV23allowsMultipleSelectionSbvM",
+            "_$s19file_selector_macos16SavePanelOptionsV16allowedFileTypesAA07AllowedI0VSgvM",
+            "_$s19file_selector_macos16OpenPanelOptionsV6toListSayypSgGyF",
+            "_$s19file_selector_macos16SavePanelOptionsVMn",
+            "_$s19file_selector_macos16SavePanelOptionsV13directoryPathSSSgvpMV",
+            "_$s19file_selector_macos20FileSelectorApiSetupCMn",
+            "_$s19file_selector_macos20FileSelectorApiCodecCMa",
+            "_$s19file_selector_macos12ViewProviderMp",
+            "_$s19file_selector_macos12AllowedTypesV4utisSaySSSgGvs",
+            "_$s19file_selector_macos16OpenPanelOptionsV14canChooseFilesSbvpMV",
+            "_$s19file_selector_macos20FileSelectorApiCodecCfD",
+            "_$s19file_selector_macos18FileSelectorPluginC12viewProvider15panelControllerAcA04ViewH0_p_AA05PanelJ0_ptcfc",
+            "_$s19file_selector_macos16SavePanelOptionsV20nameFieldStringValueSSSgvg",
+            "_$s19file_selector_macos12AllowedTypesV04mimeE0SaySSSgGvpMV",
+            "_$s19file_selector_macos16SavePanelOptionsV13directoryPathSSSgvs",
+            "_$s19file_selector_macos12AllowedTypesV04mimeE0SaySSSgGvM"
+          ],
+          "objc_class": [
+            "PodsDummy_file_selector_macos",
+            "_TtC19file_selector_macos18FileSelectorPlugin",
+            "_TtC19file_selector_macos20FileSelectorApiCodec"
+          ]
+        },
+        "text": {
+          "global": [
+            "__ZN5swift39swift51override_conformsToSwiftProtocolEPKNS_14TargetMetadataINS_9InProcessEEEPKNS_24TargetProtocolDescriptorIS1_EEN7__swift9__runtime4llvm9StringRefEPFPKNS_35TargetProtocolConformanceDescriptorIS1_EES4_S8_SC_E",
+            "__ZN5swift34swift50override_conformsToProtocolEPKNS_14TargetMetadataINS_9InProcessEEEPKNS_24TargetProtocolDescriptorIS1_EEPFPKNS_18TargetWitnessTableIS1_EES4_S8_E",
+            "__Z34_swiftoverride_class_getSuperclassPKN5swift14TargetMetadataINS_9InProcessEEE"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/file_selector_macos.framework/Versions/A/file_selector_macos"
+      }
+    ],
+    "swift_abi": [
+      {
+        "abi": 7
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "10.14",
+        "target": "x86_64-macos"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}
