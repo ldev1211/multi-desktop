@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefUtil.init();
   service = ApiService(dio.Dio(), baseUrl: url);
-  bool isLoggedIn = PrefUtil.instance.getBool("accessToken") != null;
+  bool isLoggedIn = PrefUtil.instance.getString("accessToken") != null;
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,

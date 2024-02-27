@@ -25,6 +25,56 @@ class UIUtil {
     );
   }
 
+  static void showDialogMessage(
+      {required BuildContext context, required String message}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(200)),
+            ),
+            padding: const EdgeInsets.all(24),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Tin nhắn",
+                  style: TextStyle(color: AppColor.colorMain, fontSize: 24),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  message,
+                  style: const TextStyle(color: Colors.black, fontSize: 18),
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "OK",
+                        style: TextStyle(color: AppColor.colorMain),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   static void showToast(String message) {
     Fluttertoast.showToast(
         msg: message,

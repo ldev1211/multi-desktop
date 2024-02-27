@@ -1,11 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
-
-@JsonSerializable()
 class BaseResponse {
   late final bool error;
   final String message;
   final String? accessToken;
-  final Object? data;
+  final dynamic data;
 
   BaseResponse(
       {required this.accessToken,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
+import 'package:multi_desktop/util/pref/pref_utils.dart';
 import 'package:multi_desktop/util/ui_util.dart';
 
 class LoginPage extends StatefulWidget {
@@ -204,6 +206,19 @@ class _LoginPage extends State<LoginPage> {
                         };
                         final response = await service.login(body);
                         print(response);
+                        if (!response.error) {
+                          PrefUtil.instance
+                              .setString("accessToken", response.accessToken!);
+                          StudentEntity student =
+                              StudentEntity.fromJson(response.data);
+                          PrefUtil.instance.setString("mssv", student.stuCode);
+                          Navigator.pop(context);
+                        } else {
+                          Navigator.pop(context);
+                          UIUtil.showDialogMessage(
+                              context: context,
+                              message: "Sai thông tin đăng nhập");
+                        }
                       },
                       child: Material(
                         borderRadius: BorderRadius.circular(12),
