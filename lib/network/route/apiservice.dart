@@ -22,4 +22,7 @@ abstract class ApiService {
 
   @POST('/login')
   Future<BaseResponse> login(@Body() Map<String, dynamic> body);
+
+  @GET('/stu_inf/get_members_class')
+  Future<BaseResponse> getMembers();
 }

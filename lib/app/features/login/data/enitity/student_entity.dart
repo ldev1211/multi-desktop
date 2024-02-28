@@ -5,38 +5,38 @@ part 'student_entity.g.dart';
 @JsonSerializable()
 class StudentEntity {
   @JsonKey(name: "mssv")
-  final String stuCode;
+  String stuCode;
   @JsonKey(name: "hoten")
-  final String fullName;
-  @JsonKey(name:"sdt")
-  final String phoneNumber;
+  String? fullName;
+  @JsonKey(name: "sdt")
+  String? phoneNumber;
   @JsonKey(name: "gioitinh")
-  final int gender;
+  int? gender;
   @JsonKey(name: "malop")
-  final String classCode;
+  String? classCode;
   @JsonKey(name: "pers_email")
-  final String personalEmail;
+  String? personalEmail;
   @JsonKey(name: "fb")
-  final String linkFb;
+  String? linkFb;
   @JsonKey(name: "ngaysinh")
-  final String birthDay;
+  String? birthDay;
   @JsonKey(name: "avt")
-  final String avt;
+  String? avt;
   @JsonKey(name: "bch")
-  final int bch;
+  int? bch;
   @JsonKey(name: "bcs")
-  final int bcs;
+  int? bcs;
   @JsonKey(name: "ctv")
-  final int ctv;
+  int? ctv;
   @JsonKey(name: "hide_pers_email")
-  final int isHideEmail;
+  int? isHideEmail;
   @JsonKey(name: "hide_fb")
-  final int isHideFb;
+  int? isHideFb;
   @JsonKey(name: "hide_phone")
-  final int isHidePhone;
+  int? isHidePhone;
 
   StudentEntity(
-      this.stuCode,
+      {required this.stuCode,
       this.fullName,
       this.phoneNumber,
       this.gender,
@@ -50,9 +50,10 @@ class StudentEntity {
       this.ctv,
       this.isHideEmail,
       this.isHideFb,
-      this.isHidePhone);
+      this.isHidePhone});
 
-  factory StudentEntity.fromJson(Map<String,dynamic> json) => _$StudentEntityFromJson(json);
+  factory StudentEntity.fromJson(Map<String, dynamic> json) =>
+      _$StudentEntityFromJson(json);
 
-  Map<String,dynamic> toJson() => _$StudentEntityToJson(this);
+  Map<String, dynamic> toJson() => _$StudentEntityToJson(this);
 }

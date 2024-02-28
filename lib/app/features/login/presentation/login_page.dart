@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
+import 'package:multi_desktop/app/features/members/presentation/members_page.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
@@ -213,6 +214,10 @@ class _LoginPage extends State<LoginPage> {
                               StudentEntity.fromJson(response.data);
                           PrefUtil.instance.setString("mssv", student.stuCode);
                           Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MembersPage()));
                         } else {
                           Navigator.pop(context);
                           UIUtil.showDialogMessage(
