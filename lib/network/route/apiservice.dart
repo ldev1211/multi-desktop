@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/network/model/base_response.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 import 'package:retrofit/http.dart';
@@ -25,4 +26,10 @@ abstract class ApiService {
 
   @GET('/stu_inf/get_members_class')
   Future<BaseResponse> getMembers();
+
+  @GET('/point_ext/get_point/{stuCode}')
+  Future<ResponsePointExt> getPointExt(@Path("stuCode") String stuCode);
+
+  @POST('/point_ext/post_point')
+  Future<BaseResponse> postPoint(@Body() Map<String, dynamic> body);
 }

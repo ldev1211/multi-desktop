@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
+import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
@@ -188,7 +189,16 @@ class _MembersPageState extends State<MembersPage> {
                                 ),
                                 const Spacer(),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PointingPage(
+                                          stuCode: member.stuCode,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 8,

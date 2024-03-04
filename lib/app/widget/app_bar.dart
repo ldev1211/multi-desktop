@@ -15,7 +15,6 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       actions: actions,
       elevation: 0,
-      leadingWidth: 24,
       leading: IconButton(
         onPressed: () {
           Navigator.pop(context);
@@ -34,7 +33,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           title,
           style: const TextStyle(
             color: AppColor.colorMain,
-            fontSize: 22,
+            fontSize: 28,
           ),
         ),
       ),
