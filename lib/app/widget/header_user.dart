@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:multi_desktop/util/pref/pref_utils.dart';
+import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 
 class HeaderUser {
-  static Widget get home => const HeaderUserHome();
-
-  static Widget get pointExt => const HeaderUserPointExt();
+  static Widget pointExt(StudentEntity studentEntity) =>
+      HeaderUserPointExt(student: studentEntity);
 }
 
 class HeaderUserHome extends StatelessWidget {
@@ -17,7 +16,9 @@ class HeaderUserHome extends StatelessWidget {
 }
 
 class HeaderUserPointExt extends StatelessWidget {
-  const HeaderUserPointExt({super.key});
+  HeaderUserPointExt({super.key, required this.student});
+
+  StudentEntity student;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +32,14 @@ class HeaderUserPointExt extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage:
-                NetworkImage(PrefUtil.instance.getString("linkAvtCurr")!),
+            backgroundImage: NetworkImage(student.avt!),
           ),
           const Padding(padding: EdgeInsets.only(left: 12)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                PrefUtil.instance.getString("stuNameCurr")!,
+                student.fullName!,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -49,7 +49,7 @@ class HeaderUserPointExt extends StatelessWidget {
                 height: 4,
               ),
               Text(
-                PrefUtil.instance.getString("stuCodeCurr")!,
+                student.stuCode,
                 style: const TextStyle(color: Colors.grey),
               ),
             ],

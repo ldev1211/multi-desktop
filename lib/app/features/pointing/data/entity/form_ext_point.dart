@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/EPointExt.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/view_row_point.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
+import 'package:multi_desktop/app/widget/header_user.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 
 class FormExtPoint extends StatelessWidget {
-  FormExtPoint({super.key, required this.ePointExt});
+  FormExtPoint({super.key, required this.pointExt});
 
-  EPointExt ePointExt;
+  PointExt pointExt;
 
   late Size size;
 
@@ -18,7 +19,7 @@ class FormExtPoint extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildHeader(header: ePointExt.header),
+        HeaderUser.pointExt(),
         Container(
           // width: size.width * 0.95,
           decoration: const BoxDecoration(
