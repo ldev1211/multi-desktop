@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:multi_desktop/app/features/pointing/data/entity/EPointExt.dart';
+import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/view_row_point.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
-import 'package:multi_desktop/app/widget/header_user.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 
-class FormExtPoint extends StatelessWidget {
-  FormExtPoint({super.key, required this.pointExt});
+class FormExtPoint extends StatefulWidget {
+  FormExtPoint({super.key, required this.student, required this.points});
 
-  PointExt pointExt;
+  List<PointExt> points;
+  StudentEntity student;
+  @override
+  State<FormExtPoint> createState() => _FormExtPointState();
+}
+
+class _FormExtPointState extends State<FormExtPoint> {
+  late List<PointExt> points;
 
   late Size size;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    points = widget.points;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +32,28 @@ class FormExtPoint extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        HeaderUser.pointExt(),
+        buildHeader(header: "Nội dung đánh giá"),
         Container(
-          // width: size.width * 0.95,
+          width: size.width * 0.5,
+          height: size.height * 0.7,
           decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppColor.colorMain),
             ),
           ),
-          height: size.height * 0.45,
           child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
-            itemCount: ePointExt.points.length,
+            itemCount: points.length,
             itemBuilder: (context, i) {
-              PointExt pointExt = ePointExt.points[i];
+              PointExt pointExt = points[i];
               return ViewRowPoint(
                 point: pointExt,
                 onChangePoint: (point) {
                   Map<String, dynamic> body = {
                     "idFormPoint": pointExt.id,
-                    "point": pointExt.pointSelf
+                    "point": pointExt.pointSelf,
+                    'mssv': widget.student.stuCode
                   };
                   service.postPoint(body);
                 },
@@ -57,8 +71,9 @@ class FormExtPoint extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: size.width * 0.55,
+          width: size.width * 0.3,
           height: 66,
+          alignment: Alignment.center,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -70,12 +85,12 @@ class FormExtPoint extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
         Container(
-          width: size.width * 0.2,
+          width: size.width * 0.1,
           height: 66,
           padding: const EdgeInsets.all(12),
           decoration: const BoxDecoration(
@@ -97,7 +112,7 @@ class FormExtPoint extends StatelessWidget {
           ),
         ),
         Container(
-          width: size.width * 0.2,
+          width: size.width * 0.1,
           height: 66,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(12),

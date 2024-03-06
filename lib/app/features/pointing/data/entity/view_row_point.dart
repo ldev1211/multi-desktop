@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/util/app_colors.dart';
@@ -32,7 +33,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
             thickness: 1,
           ),
           Container(
-            width: size.width * 0.55 - 2,
+            width: size.width * 0.3 - 2,
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -54,7 +55,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
             thickness: 1,
           ),
           Container(
-            width: size.width * 0.2 - 1,
+            width: size.width * 0.1 - 1,
             alignment: Alignment.center,
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(
@@ -78,7 +79,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
             thickness: 1,
           ),
           Container(
-            width: size.width * 0.2 - 1,
+            width: size.width * 0.1 - 1,
             alignment: Alignment.center,
             padding: const EdgeInsets.all(12),
             decoration: const BoxDecoration(

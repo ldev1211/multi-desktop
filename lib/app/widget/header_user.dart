@@ -73,7 +73,7 @@ class HeaderUserPointExt extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 9,
+                      fontSize: 12,
                     ),
                   )
                 ],

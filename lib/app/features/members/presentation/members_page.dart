@@ -194,10 +194,12 @@ class _MembersPageState extends State<MembersPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => PointingPage(
-                                          stuCode: member.stuCode,
+                                          stuCode: member,
                                         ),
                                       ),
-                                    );
+                                    ).then((value) {
+                                      getMembers();
+                                    });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
