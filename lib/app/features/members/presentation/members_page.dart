@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
+import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
+import 'package:multi_desktop/util/pref/pref_utils.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
@@ -51,6 +53,25 @@ class _MembersPageState extends State<MembersPage> {
           mainAxisAlignment:
               (isLoading) ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    await PrefUtil.instance.clear();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                        (Route<dynamic> route) => false);
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    size: 48,
+                    color: AppColor.colorMain,
+                  ),
+                )
+              ],
+            ),
             if (isLoading)
               const Center(
                 child: AppProgress(),
