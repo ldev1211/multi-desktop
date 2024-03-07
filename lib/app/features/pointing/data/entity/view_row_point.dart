@@ -19,124 +19,163 @@ class _ViewRowPointState extends State<ViewRowPoint> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    controller.text = (widget.point.pointSelf != null)
-        ? widget.point.pointSelf.toString()
+    controller.text = (widget.point.pointFinal != null)
+        ? widget.point.pointFinal.toString()
         : "";
     return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const VerticalDivider(
-            width: 1,
-            color: AppColor.colorMain,
-            thickness: 1,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: AppColor.colorMain),
           ),
-          Container(
-            width: size.width * 0.3 - 2,
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
             ),
-            child: Text(
-              "${widget.point.stt ?? ""} ${widget.point.content}",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: (widget.point.stt != null ||
-                        widget.point.type == TypeRow.TOTAL)
-                    ? FontWeight.bold
-                    : FontWeight.normal,
+            Container(
+              width: size.width * 0.3 - 2,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Text(
+                "${widget.point.stt ?? ""} ${widget.point.content}",
+                style: TextStyle(
+                  color: widget.point.type == TypeRow.TOTAL
+                      ? AppColor.colorMain
+                      : Colors.black,
+                  fontWeight: (widget.point.stt != null ||
+                          widget.point.type == TypeRow.TOTAL ||
+                          widget.point.type == TypeRow.HEADER)
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                ),
               ),
             ),
-          ),
-          const VerticalDivider(
-            width: 1,
-            color: AppColor.colorMain,
-            thickness: 1,
-          ),
-          Container(
-            width: size.width * 0.1 - 1,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
             ),
-            child: Text(
-              (widget.point.pointRule != null)
-                  ? "${widget.point.pointRule} điểm"
-                  : "",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 13,
-                fontWeight: FontWeight.normal,
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
               ),
-            ),
-          ),
-          const VerticalDivider(
-            width: 1,
-            color: AppColor.colorMain,
-            thickness: 1,
-          ),
-          Container(
-            width: size.width * 0.1 - 1,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Visibility(
-              visible: widget.point.pointRule != null &&
-                  widget.point.type != TypeRow.TOTAL,
-              child: TextField(
-                textAlignVertical: TextAlignVertical.center,
-                cursorColor: AppColor.colorMain,
-                controller: controller,
-                keyboardType: (Platform.isAndroid)
-                    ? TextInputType.number
-                    : const TextInputType.numberWithOptions(
-                        signed: true,
-                        decimal: true,
-                      ),
+              child: Text(
+                (widget.point.pointRule != null)
+                    ? "${widget.point.pointRule} điểm"
+                    : "",
                 textAlign: TextAlign.center,
-                onChanged: (string) {
-                  try {
-                    int pointVal = int.parse(controller.text);
-                    if (!(controller.text == '-' ||
-                        pointVal <= widget.point.pointRule!)) {
-                      controller.text = controller.text
-                          .substring(0, controller.text.length - 1);
-                      return;
-                    }
-                    widget.point.pointSelf = pointVal;
-                  } catch (e) {
-                    widget.point.pointSelf = null;
-                  }
-                  widget.onChangePoint(widget.point.pointSelf);
-                },
-                style: const TextStyle(fontSize: 13),
-                decoration: const InputDecoration(
-                  hintText: "0 điểm",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.colorMain),
-                  ),
-                  hintStyle: TextStyle(
+                style: const TextStyle(
+                  color: AppColor.colorMain,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Visibility(
+                visible: widget.point.type == TypeRow.ROW &&
+                    widget.point.pointRule != null,
+                child: Text(
+                  (widget.point.pointSelf != null)
+                      ? "${widget.point.pointSelf} điểm"
+                      : "0 điểm",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 13,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ),
             ),
-          ),
-          const VerticalDivider(
-            width: 1,
-            color: AppColor.colorMain,
-            thickness: 1,
-          )
-        ],
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Visibility(
+                visible: widget.point.type == TypeRow.ROW &&
+                    widget.point.pointRule != null,
+                child: TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: AppColor.colorMain,
+                  controller: controller,
+                  keyboardType: (Platform.isAndroid)
+                      ? TextInputType.number
+                      : const TextInputType.numberWithOptions(
+                          signed: true,
+                          decimal: true,
+                        ),
+                  textAlign: TextAlign.center,
+                  onChanged: (string) {
+                    try {
+                      int pointVal = int.parse(controller.text);
+                      if (!(controller.text == '-' ||
+                          pointVal <= widget.point.pointRule!)) {
+                        controller.text = controller.text
+                            .substring(0, controller.text.length - 1);
+                        return;
+                      }
+                      widget.point.pointSelf = pointVal;
+                    } catch (e) {
+                      widget.point.pointSelf = null;
+                    }
+                    widget.onChangePoint(widget.point.pointSelf);
+                  },
+                  style: const TextStyle(fontSize: 13),
+                  decoration: const InputDecoration(
+                    hintText: "0 điểm",
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.colorMain),
+                    ),
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            )
+          ],
+        ),
       ),
     );
   }

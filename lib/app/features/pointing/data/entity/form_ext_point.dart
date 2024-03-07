@@ -34,7 +34,7 @@ class _FormExtPointState extends State<FormExtPoint> {
       children: [
         buildHeader(header: "Nội dung đánh giá"),
         Container(
-          width: size.width * 0.5,
+          width: size.width * 0.6,
           height: size.height * 0.7,
           decoration: const BoxDecoration(
             border: Border(
@@ -107,7 +107,29 @@ class _FormExtPointState extends State<FormExtPoint> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          width: size.width * 0.1,
+          height: 66,
+          padding: const EdgeInsets.all(12),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: BorderSide(color: AppColor.colorMain),
+              right: BorderSide(color: AppColor.colorMain),
+              top: BorderSide(color: AppColor.colorMain),
+            ),
+          ),
+          alignment: Alignment.center,
+          child: const Text(
+            "Điểm cá nhân chấm",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -132,7 +154,7 @@ class _FormExtPointState extends State<FormExtPoint> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

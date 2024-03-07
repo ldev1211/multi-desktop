@@ -44,7 +44,7 @@ class _PointingPageState extends State<PointingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: size.width / 2,
+                width: size.width * 0.6,
                 child: HeaderUser.pointExt(student),
               ),
               const SizedBox(height: 12),
