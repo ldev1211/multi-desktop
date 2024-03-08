@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/form_ext_point.dart';
+import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/cubit/pointing/cubit.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/cubit/pointing/state.dart';
 import 'package:multi_desktop/app/widget/app_bar.dart';
@@ -30,7 +31,7 @@ class _PointingPageState extends State<PointingPage> {
 
   String? path;
 
-  Future<void> initPDF() async {
+  Future<void> initPDF(List<PointExt> data) async {
     final font = await rootBundle.load("fonts/Lora-Regular.ttf");
     final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
     final ttfRegular = pw.Font.ttf(font);
@@ -40,37 +41,51 @@ class _PointingPageState extends State<PointingPage> {
         pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
     final defaultHeaderTextStyleRegular =
         pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
+    final defaultRowTextStyleRegular =
+        pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
     String nhhk = "20222";
     String semester = "I" * int.parse(nhhk.substring(4));
     String year =
         "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
-    pdf.addPage(pw.Page(
+    double headerHeight = 70;
+    double rowHeight = 30;
+    double widthStt = 25;
+    double widthContent = 250;
+    double widthPointRule = 50;
+    double widthPointExt = 200;
+    double widthDetailPoint = widthPointExt / 3;
+    pdf.addPage(
+      pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         orientation: pw.PageOrientation.portrait,
-        build: (pw.Context context) {
-          return pw
-              .Column(mainAxisAlignment: pw.MainAxisAlignment.start, children: [
-            pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
-              pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.center,
-                  children: [
-                    pw.Text("HỌC VIỆN CN BƯU CHÍNH VIỄN THÔNG",
-                        style: defaultHeaderTextStyleBold),
-                    pw.Text("HỌC VIỆN CN BCVN CƠ SỞ TẠI TP. HCM",
-                        style: defaultHeaderTextStyleBold),
-                    pw.Container(color: PdfColors.black, height: 1, width: 150)
-                  ]),
-              pw.Spacer(),
-              pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.center,
-                  children: [
-                    pw.Text("CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM",
-                        style: defaultHeaderTextStyleBold),
-                    pw.Text("Độc lập - Tự do - Hạnh phúc",
-                        style: defaultHeaderTextStyleBold),
-                    pw.Container(color: PdfColors.black, height: 1, width: 150)
-                  ])
-            ]),
+        build: (context) {
+          return [
+            pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text("HỌC VIỆN CN BƯU CHÍNH VIỄN THÔNG",
+                          style: defaultHeaderTextStyleBold),
+                      pw.Text("HỌC VIỆN CN BCVN CƠ SỞ TẠI TP. HCM",
+                          style: defaultHeaderTextStyleBold),
+                      pw.Container(
+                          color: PdfColors.black, height: 1, width: 150)
+                    ]),
+                pw.Spacer(),
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text("CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+                          style: defaultHeaderTextStyleBold),
+                      pw.Text("Độc lập - Tự do - Hạnh phúc",
+                          style: defaultHeaderTextStyleBold),
+                      pw.Container(
+                          color: PdfColors.black, height: 1, width: 150)
+                    ])
+              ],
+            ),
             pw.SizedBox(height: 24),
             pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -128,67 +143,199 @@ class _PointingPageState extends State<PointingPage> {
                   pw.SizedBox(width: 24),
                 ]),
             pw.SizedBox(height: 24),
-            pw.Column(
+            pw.SizedBox(
+              height: headerHeight,
+              child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Row(
-                      mainAxisSize: pw.MainAxisSize.max,
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      children: [
-                        pw.Container(
-                            alignment: pw.Alignment.center,
-                            height: 50,
-                            width: 25,
-                            decoration: pw.BoxDecoration(
-                                border: pw.Border.all(color: PdfColors.black)),
-                            child: pw.Text("TT",
-                                style: defaultHeaderTextStyleBold)),
-                        pw.Container(
-                            width: 250,
-                            height: 50,
-                            alignment: pw.Alignment.center,
-                            decoration: pw.BoxDecoration(
-                                border: pw.Border.all(color: PdfColors.black)),
-                            child: pw.Text("Nội dung đánh giá",
-                                style: defaultHeaderTextStyleBold)),
-                        pw.Container(
-                            width: 50,
-                            height: 50,
-                            padding:
-                                const pw.EdgeInsets.symmetric(horizontal: 6),
-                            alignment: pw.Alignment.center,
-                            decoration: pw.BoxDecoration(
-                                border: pw.Border.all(color: PdfColors.black)),
-                            child: pw.Text("Điểm quy định",
+                    mainAxisSize: pw.MainAxisSize.max,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Container(
+                          width: widthStt,
+                          height: headerHeight,
+                          alignment: pw.Alignment.center,
+                          decoration: pw.BoxDecoration(
+                              border: pw.Border.all(color: PdfColors.black)),
+                          child:
+                              pw.Text("TT", style: defaultHeaderTextStyleBold)),
+                      pw.Container(
+                          width: widthContent,
+                          height: headerHeight,
+                          alignment: pw.Alignment.center,
+                          decoration: pw.BoxDecoration(
+                              border: pw.Border.all(color: PdfColors.black)),
+                          child: pw.Text("Nội dung đánh giá",
+                              style: defaultHeaderTextStyleBold)),
+                      pw.Container(
+                        width: widthPointRule,
+                        height: headerHeight,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                            border: pw.Border.all(color: PdfColors.black)),
+                        child: pw.Text("Điểm quy định",
+                            textAlign: pw.TextAlign.center,
+                            style: defaultHeaderTextStyleBold),
+                      ),
+                      pw.Container(
+                        width: widthPointExt,
+                        height: headerHeight,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                          border: pw.Border.all(color: PdfColors.black),
+                        ),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          children: [
+                            pw.Container(
+                              width: widthPointExt,
+                              height: headerHeight * 0.25,
+                              alignment: pw.Alignment.center,
+                              decoration: pw.BoxDecoration(
+                                  border:
+                                      pw.Border.all(color: PdfColors.black)),
+                              child: pw.Text(
+                                "Điểm đánh giá",
                                 textAlign: pw.TextAlign.center,
-                                style: defaultHeaderTextStyleBold)),
-                        pw.Container(
-                            height: 50,
-                            alignment: pw.Alignment.center,
-                            decoration: pw.BoxDecoration(
-                                border: pw.Border.all(color: PdfColors.black)),
-                            child: pw.Column(
-                                crossAxisAlignment:
-                                    pw.CrossAxisAlignment.center,
-                                children: [
-                                  pw.Container(
-                                      width: 200,
-                                      height: 50,
-                                      padding: const pw.EdgeInsets.symmetric(
-                                          horizontal: 6),
-                                      alignment: pw.Alignment.center,
-                                      decoration: pw.BoxDecoration(
-                                          border: pw.Border.all(
-                                              color: PdfColors.black)),
-                                      child: pw.Text("Điểm đánh giá",
-                                          textAlign: pw.TextAlign.center,
-                                          style: defaultHeaderTextStyleBold)),
-                                  pw.Row()
-                                ])),
-                      ])
-                ])
-          ]);
-        }));
+                                style: defaultHeaderTextStyleBold,
+                              ),
+                            ),
+                            pw.Row(
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              children: [
+                                pw.Container(
+                                  width: widthDetailPoint,
+                                  height: headerHeight * 3 / 4,
+                                  alignment: pw.Alignment.center,
+                                  decoration: pw.BoxDecoration(
+                                    color: PdfColors.white,
+                                    border:
+                                        pw.Border.all(color: PdfColors.black),
+                                  ),
+                                  child: pw.Text(
+                                    "Sinh viên đánh giá",
+                                    textAlign: pw.TextAlign.center,
+                                    style: defaultHeaderTextStyleBold,
+                                  ),
+                                ),
+                                pw.Container(
+                                  width: widthDetailPoint,
+                                  height: headerHeight * 3 / 4,
+                                  alignment: pw.Alignment.center,
+                                  decoration: pw.BoxDecoration(
+                                    color: PdfColors.white,
+                                    border:
+                                        pw.Border.all(color: PdfColors.black),
+                                  ),
+                                  child: pw.Text(
+                                    "Tập thể lớp đánh giá",
+                                    textAlign: pw.TextAlign.center,
+                                    style: defaultHeaderTextStyleBold,
+                                  ),
+                                ),
+                                pw.Container(
+                                  width: widthDetailPoint,
+                                  height: headerHeight * 3 / 4,
+                                  alignment: pw.Alignment.center,
+                                  decoration: pw.BoxDecoration(
+                                    color: PdfColors.white,
+                                    border:
+                                        pw.Border.all(color: PdfColors.black),
+                                  ),
+                                  child: pw.Text(
+                                    "CVHT đánh giá",
+                                    textAlign: pw.TextAlign.center,
+                                    style: defaultHeaderTextStyleBold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            for (int i = 0; i < data.length; ++i)
+              pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                children: [
+                  pw.Container(
+                    width: widthStt,
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    child: pw.Text(
+                      "${data[i].stt ?? ''}",
+                      textAlign: pw.TextAlign.center,
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                  pw.Container(
+                    padding: const pw.EdgeInsets.all(8),
+                    width: widthContent,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    child: pw.Text(
+                      data[i].content,
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                  pw.Container(
+                    width: widthPointRule,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    alignment: pw.Alignment.center,
+                    child: pw.Text(
+                      "${data[i].pointRule ?? ''}",
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                  pw.Container(
+                    width: widthDetailPoint,
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    child: pw.Text(
+                      "${data[i].pointSelf ?? '0'}",
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                  pw.Container(
+                    width: widthDetailPoint,
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    child: pw.Text(
+                      "${data[i].pointFinal ?? '0'}",
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                  pw.Container(
+                    width: widthDetailPoint,
+                    alignment: pw.Alignment.center,
+                    decoration: pw.BoxDecoration(
+                      border: pw.Border.all(color: PdfColors.black),
+                    ),
+                    child: pw.Text(
+                      "",
+                      style: defaultRowTextStyleRegular,
+                    ),
+                  ),
+                ],
+              ),
+          ];
+        },
+      ),
+    );
     final output = await getApplicationDocumentsDirectory();
     final file = File("${output.path}/example.pdf");
     print(file.path);
@@ -199,7 +346,6 @@ class _PointingPageState extends State<PointingPage> {
     //   fileBytes,
     //   filename: file.path.split('/').last,
     // );
-    setState(() {});
   }
 
   @override
@@ -208,7 +354,6 @@ class _PointingPageState extends State<PointingPage> {
     super.initState();
     student = widget.stuCode;
     _cubit.fetchPoint(stuCode: student.stuCode);
-    initPDF();
   }
 
   @override
@@ -238,6 +383,7 @@ class _PointingPageState extends State<PointingPage> {
                     },
                     builder: (context, state) {
                       if (state is FetchedPointState) {
+                        initPDF(state.points);
                         return FormExtPoint(
                           points: state.points,
                           student: student,
@@ -253,32 +399,6 @@ class _PointingPageState extends State<PointingPage> {
                 ],
               ),
               const Spacer(),
-              // if (pdfData != null)
-              //   PDFView(
-              //     pdfData: pdfData,
-              //     enableSwipe: true,
-              //     swipeHorizontal: true,
-              //     autoSpacing: false,
-              //     pageFling: false,
-              //     onRender: (_pages) {
-              //       // setState(() {
-              //       //   pages = _pages;
-              //       //   isReady = true;
-              //       // });
-              //     },
-              //     onError: (error) {
-              //       print(error.toString());
-              //     },
-              //     onPageError: (page, error) {
-              //       print('$page: ${error.toString()}');
-              //     },
-              //     onViewCreated: (PDFViewController pdfViewController) {
-              //       // _controller.complete(pdfViewController);
-              //     },
-              //     onPageChanged: (int? page, int? total) {
-              //       print('page change: $page/$total');
-              //     },
-              //   )
             ],
           ),
         ),
