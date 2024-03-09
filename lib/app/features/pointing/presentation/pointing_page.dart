@@ -55,6 +55,7 @@ class _PointingPageState extends State<PointingPage> {
     double widthContent = 250;
     double widthPointRule = 50;
     double widthPointExt = 162;
+    double widthPage = widthStt + widthContent + widthPointExt + widthPointRule;
     double widthDetailPoint = widthPointExt / 3;
     DateTime now = DateTime.now();
     pdf.addPage(
@@ -116,13 +117,13 @@ class _PointingPageState extends State<PointingPage> {
                   pw.Container(
                       width: 220,
                       height: 20,
-                      child: pw.Text("Họ và tên: Lương Quốc Diễn",
+                      child: pw.Text("Họ và tên: ${student.fullName}",
                           style: defaultHeaderTextStyleRegular)),
                   pw.SizedBox(width: 24),
                   pw.Container(
                       width: 220,
                       height: 20,
-                      child: pw.Text("Ngày sinh: 17/10/2002",
+                      child: pw.Text("Ngày sinh: ${student.birthDay}",
                           style: defaultHeaderTextStyleRegular)),
                   pw.SizedBox(width: 24),
                 ]),
@@ -135,13 +136,13 @@ class _PointingPageState extends State<PointingPage> {
                   pw.Container(
                       width: 220,
                       height: 20,
-                      child: pw.Text("Mã số sinh viên: N20DCPT009",
+                      child: pw.Text("Mã số sinh viên: ${student.stuCode}",
                           style: defaultHeaderTextStyleRegular)),
                   pw.SizedBox(width: 24),
                   pw.Container(
                       width: 220,
                       height: 20,
-                      child: pw.Text("Lớp: D20CQPTUD01-N",
+                      child: pw.Text("Lớp: ${student.classCode}",
                           style: defaultHeaderTextStyleRegular)),
                   pw.SizedBox(width: 24),
                 ]),
@@ -340,9 +341,78 @@ class _PointingPageState extends State<PointingPage> {
                   ),
               ],
             ),
+            pw.SizedBox(height: 8),
             pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.end,
-                children: [pw.Text("TP.HCM, ngày")])
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              children: [
+                pw.Text(
+                  "TP.HCM, Ngày ${(now.day < 10) ? "0${now.day}" : now.day} tháng ${(now.month < 10) ? "0${now.month}" : now.month} năm ${now.year}",
+                  style: defaultRowTextStyleRegular,
+                )
+              ],
+            ),
+            pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+              children: [
+                pw.Container(
+                  width: widthPage * 0.2,
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                        "XÁC NHẬN CỦA CỐ VẤN HỌC TẬP",
+                        textAlign: pw.TextAlign.center,
+                        style: defaultHeaderTextStyleBold,
+                      ),
+                      pw.SizedBox(height: 70),
+                      pw.Text("............................")
+                    ],
+                  ),
+                ),
+                pw.Container(
+                  width: widthPage * 0.2,
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                        "TM. BAN CÁN SỰ\nLỚP TRƯỞNG",
+                        textAlign: pw.TextAlign.center,
+                        style: defaultHeaderTextStyleBold,
+                      ),
+                      pw.SizedBox(height: 70),
+                      pw.Text("............................")
+                    ],
+                  ),
+                ),
+                pw.Container(
+                  width: widthPage * 0.2,
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                        "TM. BCH CHI ĐOÀN\nBÍ THƯ",
+                        textAlign: pw.TextAlign.center,
+                        style: defaultHeaderTextStyleBold,
+                      ),
+                      pw.SizedBox(height: 70),
+                      pw.Text("............................")
+                    ],
+                  ),
+                ),
+                pw.Container(
+                  width: widthPage * 0.2,
+                  child: pw.Column(
+                    children: [
+                      pw.Text(
+                        "SINH VIÊN",
+                        textAlign: pw.TextAlign.center,
+                        style: defaultHeaderTextStyleBold,
+                      ),
+                      pw.SizedBox(height: 85),
+                      pw.Text("............................")
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ];
         },
       ),

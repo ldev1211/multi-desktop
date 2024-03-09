@@ -26,10 +26,6 @@ class _FormExtPointState extends State<FormExtPoint> {
     // TODO: implement initState
     super.initState();
     points = widget.points;
-    // points = [];
-    // for (var e in ePoints) {
-    //   points.addAll(e.points);
-    // }
   }
 
   @override
