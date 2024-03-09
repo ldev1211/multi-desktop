@@ -5,4 +5,9 @@ class EPointExt {
   List<PointExt> points;
 
   EPointExt(this.header, this.points);
+
+  @override
+  String toString() {
+    return 'EPointExt{header: $header, points: $points}';
+  }
 }

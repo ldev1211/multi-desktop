@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
+import 'package:multi_desktop/app/features/pointing/data/entity/EPointExt.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/view_row_point.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/main.dart';
@@ -15,6 +16,7 @@ class FormExtPoint extends StatefulWidget {
 }
 
 class _FormExtPointState extends State<FormExtPoint> {
+  late List<EPointExt> ePoints;
   late List<PointExt> points;
 
   late Size size;
@@ -24,6 +26,10 @@ class _FormExtPointState extends State<FormExtPoint> {
     // TODO: implement initState
     super.initState();
     points = widget.points;
+    // points = [];
+    // for (var e in ePoints) {
+    //   points.addAll(e.points);
+    // }
   }
 
   @override

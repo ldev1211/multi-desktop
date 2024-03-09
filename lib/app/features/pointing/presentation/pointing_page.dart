@@ -43,17 +43,20 @@ class _PointingPageState extends State<PointingPage> {
         pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleRegular =
         pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
+    final defaultRowTextStyleBold =
+        pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
     String nhhk = "20222";
     String semester = "I" * int.parse(nhhk.substring(4));
     String year =
         "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
     double headerHeight = 70;
     double rowHeight = 30;
-    double widthStt = 25;
+    double widthStt = 20;
     double widthContent = 250;
     double widthPointRule = 50;
-    double widthPointExt = 200;
+    double widthPointExt = 162;
     double widthDetailPoint = widthPointExt / 3;
+    DateTime now = DateTime.now();
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
@@ -259,79 +262,87 @@ class _PointingPageState extends State<PointingPage> {
                 ],
               ),
             ),
-            for (int i = 0; i < data.length; ++i)
-              pw.Row(
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Container(
-                    width: widthStt,
-                    alignment: pw.Alignment.center,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    child: pw.Text(
-                      "${data[i].stt ?? ''}",
-                      textAlign: pw.TextAlign.center,
-                      style: defaultRowTextStyleRegular,
-                    ),
+            pw.Table(
+              tableWidth: pw.TableWidth.max,
+              columnWidths: {
+                0: pw.FixedColumnWidth(widthStt),
+                1: pw.FixedColumnWidth(widthContent),
+                2: pw.FixedColumnWidth(widthPointRule),
+                3: pw.FixedColumnWidth(widthDetailPoint),
+                4: pw.FixedColumnWidth(widthDetailPoint),
+                5: pw.FixedColumnWidth(widthDetailPoint),
+              },
+              border: pw.TableBorder.all(),
+              children: [
+                for (var e in data)
+                  pw.TableRow(
+                    verticalAlignment: pw.TableCellVerticalAlignment.middle,
+                    children: [
+                      pw.Container(
+                        width: widthStt,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          "${e.stt ?? ''}",
+                          textAlign: pw.TextAlign.center,
+                          style: defaultRowTextStyleRegular,
+                        ),
+                      ),
+                      pw.Container(
+                        padding: const pw.EdgeInsets.all(8),
+                        width: widthContent,
+                        child: pw.Text(
+                          e.content,
+                          style: (e.type == TypeRow.HEADER ||
+                                  e.type == TypeRow.TOTAL)
+                              ? defaultRowTextStyleBold
+                              : defaultRowTextStyleRegular,
+                        ),
+                      ),
+                      pw.Container(
+                        width: widthPointRule,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          "${e.pointRule ?? ''}",
+                          style: e.type == TypeRow.TOTAL
+                              ? defaultRowTextStyleBold
+                              : defaultRowTextStyleRegular,
+                        ),
+                      ),
+                      pw.Container(
+                        width: widthDetailPoint,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          (e.type == TypeRow.HEADER || e.pointRule == null)
+                              ? ""
+                              : "${e.pointSelf ?? '0'}",
+                          style: defaultRowTextStyleRegular,
+                        ),
+                      ),
+                      pw.Container(
+                        width: widthDetailPoint,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          (e.type == TypeRow.HEADER || e.pointRule == null)
+                              ? ""
+                              : "${e.pointFinal ?? '0'}",
+                          style: defaultRowTextStyleRegular,
+                        ),
+                      ),
+                      pw.Container(
+                        width: widthDetailPoint,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          "",
+                          style: defaultRowTextStyleRegular,
+                        ),
+                      ),
+                    ],
                   ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    width: widthContent,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    child: pw.Text(
-                      data[i].content,
-                      style: defaultRowTextStyleRegular,
-                    ),
-                  ),
-                  pw.Container(
-                    width: widthPointRule,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    alignment: pw.Alignment.center,
-                    child: pw.Text(
-                      "${data[i].pointRule ?? ''}",
-                      style: defaultRowTextStyleRegular,
-                    ),
-                  ),
-                  pw.Container(
-                    width: widthDetailPoint,
-                    alignment: pw.Alignment.center,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    child: pw.Text(
-                      "${data[i].pointSelf ?? '0'}",
-                      style: defaultRowTextStyleRegular,
-                    ),
-                  ),
-                  pw.Container(
-                    width: widthDetailPoint,
-                    alignment: pw.Alignment.center,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    child: pw.Text(
-                      "${data[i].pointFinal ?? '0'}",
-                      style: defaultRowTextStyleRegular,
-                    ),
-                  ),
-                  pw.Container(
-                    width: widthDetailPoint,
-                    alignment: pw.Alignment.center,
-                    decoration: pw.BoxDecoration(
-                      border: pw.Border.all(color: PdfColors.black),
-                    ),
-                    child: pw.Text(
-                      "",
-                      style: defaultRowTextStyleRegular,
-                    ),
-                  ),
-                ],
-              ),
+              ],
+            ),
+            pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                children: [pw.Text("TP.HCM, ngày")])
           ];
         },
       ),
