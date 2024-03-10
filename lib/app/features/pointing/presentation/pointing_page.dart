@@ -42,14 +42,14 @@ class _PointingPageState extends State<PointingPage> {
     final defaultHeaderTextStyleRegular =
         pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleRegular =
-        pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
+        pw.TextStyle(fontSize: 7.5, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleBold =
-        pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+        pw.TextStyle(fontSize: 7.5, font: ttfBold, color: PdfColors.black);
     String nhhk = "20222";
     String semester = "I" * int.parse(nhhk.substring(4));
     String year =
         "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
-    double headerHeight = 70;
+    double headerHeight = 60;
     double rowHeight = 30;
     double widthStt = 20;
     double widthContent = 250;
@@ -98,7 +98,7 @@ class _PointingPageState extends State<PointingPage> {
                   pw.Text("PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN",
                       style: defaultHeaderTextStyleBold.copyWith(fontSize: 13))
                 ]),
-            pw.SizedBox(height: 12),
+            pw.SizedBox(height: 4),
             pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -110,43 +110,43 @@ class _PointingPageState extends State<PointingPage> {
                 ]),
             pw.SizedBox(height: 8),
             pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.SizedBox(width: 24),
-                  pw.Container(
-                      width: 220,
-                      height: 20,
-                      child: pw.Text("Họ và tên: ${student.fullName}",
-                          style: defaultHeaderTextStyleRegular)),
-                  pw.SizedBox(width: 24),
-                  pw.Container(
-                      width: 220,
-                      height: 20,
-                      child: pw.Text("Ngày sinh: ${student.birthDay}",
-                          style: defaultHeaderTextStyleRegular)),
-                  pw.SizedBox(width: 24),
-                ]),
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.SizedBox(width: 24),
+                pw.Container(
+                    width: widthPage * 0.4,
+                    child: pw.Text("Họ và tên: ${student.fullName}",
+                        style: defaultHeaderTextStyleRegular)),
+                pw.Spacer(),
+                pw.Container(
+                    width: widthPage * 0.4,
+                    child: pw.Text("Ngày sinh: ${student.birthDay}",
+                        style: defaultHeaderTextStyleRegular)),
+                pw.SizedBox(width: 24),
+              ],
+            ),
             pw.SizedBox(height: 4),
             pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.SizedBox(width: 24),
-                  pw.Container(
-                      width: 220,
-                      height: 20,
-                      child: pw.Text("Mã số sinh viên: ${student.stuCode}",
-                          style: defaultHeaderTextStyleRegular)),
-                  pw.SizedBox(width: 24),
-                  pw.Container(
-                      width: 220,
-                      height: 20,
-                      child: pw.Text("Lớp: ${student.classCode}",
-                          style: defaultHeaderTextStyleRegular)),
-                  pw.SizedBox(width: 24),
-                ]),
-            pw.SizedBox(height: 24),
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.SizedBox(width: 24),
+                pw.Container(
+                    width: widthPage * 0.4,
+                    height: 20,
+                    child: pw.Text("Mã số sinh viên: ${student.stuCode}",
+                        style: defaultHeaderTextStyleRegular)),
+                pw.Spacer(),
+                pw.Container(
+                    width: widthPage * 0.4,
+                    height: 20,
+                    child: pw.Text("Lớp: ${student.classCode}",
+                        style: defaultHeaderTextStyleRegular)),
+                pw.SizedBox(width: 24),
+              ],
+            ),
+            pw.SizedBox(height: 12),
             pw.SizedBox(
               height: headerHeight,
               child: pw.Column(
@@ -157,25 +157,32 @@ class _PointingPageState extends State<PointingPage> {
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
                     children: [
                       pw.Container(
-                          width: widthStt,
-                          height: headerHeight,
-                          alignment: pw.Alignment.center,
-                          decoration: pw.BoxDecoration(
-                              border: pw.Border.all(color: PdfColors.black)),
-                          child:
-                              pw.Text("TT", style: defaultHeaderTextStyleBold)),
+                        width: widthStt,
+                        height: headerHeight,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                            border: pw.Border.all(color: PdfColors.black)),
+                        child: pw.Text(
+                          "TT",
+                          style: defaultHeaderTextStyleBold,
+                        ),
+                      ),
                       pw.Container(
-                          width: widthContent,
-                          height: headerHeight,
-                          alignment: pw.Alignment.center,
-                          decoration: pw.BoxDecoration(
-                              border: pw.Border.all(color: PdfColors.black)),
-                          child: pw.Text("Nội dung đánh giá",
-                              style: defaultHeaderTextStyleBold)),
+                        width: widthContent,
+                        height: headerHeight,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                            border: pw.Border.all(color: PdfColors.black)),
+                        child: pw.Text(
+                          "Nội dung đánh giá",
+                          style: defaultHeaderTextStyleBold,
+                        ),
+                      ),
                       pw.Container(
                         width: widthPointRule,
                         height: headerHeight,
                         alignment: pw.Alignment.center,
+                        padding: const pw.EdgeInsets.all(8),
                         decoration: pw.BoxDecoration(
                             border: pw.Border.all(color: PdfColors.black)),
                         child: pw.Text("Điểm quy định",
@@ -227,6 +234,7 @@ class _PointingPageState extends State<PointingPage> {
                                   width: widthDetailPoint,
                                   height: headerHeight * 3 / 4,
                                   alignment: pw.Alignment.center,
+                                  padding: const pw.EdgeInsets.all(4),
                                   decoration: pw.BoxDecoration(
                                     color: PdfColors.white,
                                     border:
@@ -303,7 +311,7 @@ class _PointingPageState extends State<PointingPage> {
                         width: widthPointRule,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          "${e.pointRule ?? ''}",
+                          (e.pointRule != null) ? "${e.pointRule} điểm" : '',
                           style: e.type == TypeRow.TOTAL
                               ? defaultRowTextStyleBold
                               : defaultRowTextStyleRegular,
@@ -347,10 +355,11 @@ class _PointingPageState extends State<PointingPage> {
               children: [
                 pw.Text(
                   "TP.HCM, Ngày ${(now.day < 10) ? "0${now.day}" : now.day} tháng ${(now.month < 10) ? "0${now.month}" : now.month} năm ${now.year}",
-                  style: defaultRowTextStyleRegular,
+                  style: defaultRowTextStyleRegular.copyWith(fontSize: 10),
                 )
               ],
             ),
+            pw.SizedBox(height: 8),
             pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.center,
               mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
@@ -418,7 +427,8 @@ class _PointingPageState extends State<PointingPage> {
       ),
     );
     final output = await getApplicationDocumentsDirectory();
-    final file = File("${output.path}/example.pdf");
+    final file =
+        File("${output.path}/${student.stuCode} - ${student.fullName}.pdf");
     print(file.path);
     await file.writeAsBytes(await pdf.save());
     // dio.MultipartFile? multipartFile;
