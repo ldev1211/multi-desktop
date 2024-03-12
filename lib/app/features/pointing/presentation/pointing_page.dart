@@ -31,7 +31,8 @@ class _PointingPageState extends State<PointingPage> {
 
   String? path;
 
-  Future<void> initPDF(List<PointExt> data) async {
+  Future<void> initPDF(
+      List<PointExt> data, int totalSelf, int totalFinal) async {
     final font = await rootBundle.load("fonts/Lora-Regular.ttf");
     final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
     final ttfRegular = pw.Font.ttf(font);
@@ -42,9 +43,9 @@ class _PointingPageState extends State<PointingPage> {
     final defaultHeaderTextStyleRegular =
         pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleRegular =
-        pw.TextStyle(fontSize: 7.5, font: ttfRegular, color: PdfColors.black);
+        pw.TextStyle(fontSize: 7, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleBold =
-        pw.TextStyle(fontSize: 7.5, font: ttfBold, color: PdfColors.black);
+        pw.TextStyle(fontSize: 7, font: ttfBold, color: PdfColors.black);
     String nhhk = "20222";
     String semester = "I" * int.parse(nhhk.substring(4));
     String year =
@@ -283,7 +284,7 @@ class _PointingPageState extends State<PointingPage> {
               },
               border: pw.TableBorder.all(),
               children: [
-                for (var e in data)
+                for (int i = 0; i <= data.length; ++i)
                   pw.TableRow(
                     verticalAlignment: pw.TableCellVerticalAlignment.middle,
                     children: [
@@ -291,7 +292,7 @@ class _PointingPageState extends State<PointingPage> {
                         width: widthStt,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          "${e.stt ?? ''}",
+                          (i < data.length) ? "${data[i].stt ?? ''}" : "",
                           textAlign: pw.TextAlign.center,
                           style: defaultRowTextStyleRegular,
                         ),
@@ -300,9 +301,10 @@ class _PointingPageState extends State<PointingPage> {
                         padding: const pw.EdgeInsets.all(8),
                         width: widthContent,
                         child: pw.Text(
-                          e.content,
-                          style: (e.type == TypeRow.HEADER ||
-                                  e.type == TypeRow.TOTAL)
+                          (i < data.length) ? data[i].content : "TỔNG CỘNG",
+                          style: (i == data.length ||
+                                  data[i].type == TypeRow.HEADER ||
+                                  data[i].type == TypeRow.TOTAL)
                               ? defaultRowTextStyleBold
                               : defaultRowTextStyleRegular,
                         ),
@@ -311,19 +313,27 @@ class _PointingPageState extends State<PointingPage> {
                         width: widthPointRule,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          (e.pointRule != null) ? "${e.pointRule} điểm" : '',
-                          style: e.type == TypeRow.TOTAL
-                              ? defaultRowTextStyleBold
-                              : defaultRowTextStyleRegular,
+                          (i < data.length)
+                              ? (data[i].pointRule != null)
+                                  ? "${data[i].pointRule} điểm"
+                                  : ''
+                              : '100',
+                          style:
+                              i == data.length || data[i].type == TypeRow.TOTAL
+                                  ? defaultRowTextStyleBold
+                                  : defaultRowTextStyleRegular,
                         ),
                       ),
                       pw.Container(
                         width: widthDetailPoint,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          (e.type == TypeRow.HEADER || e.pointRule == null)
-                              ? ""
-                              : "${e.pointSelf ?? '0'}",
+                          (i < data.length)
+                              ? (data[i].type == TypeRow.HEADER ||
+                                      data[i].pointRule == null)
+                                  ? ""
+                                  : "${data[i].pointSelf ?? '0'}"
+                              : totalSelf.toString(),
                           style: defaultRowTextStyleRegular,
                         ),
                       ),
@@ -331,9 +341,12 @@ class _PointingPageState extends State<PointingPage> {
                         width: widthDetailPoint,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          (e.type == TypeRow.HEADER || e.pointRule == null)
-                              ? ""
-                              : "${e.pointFinal ?? '0'}",
+                          (i < data.length)
+                              ? (data[i].type == TypeRow.HEADER ||
+                                      data[i].pointRule == null)
+                                  ? ""
+                                  : "${data[i].pointFinal ?? '0'}"
+                              : totalFinal.toString(),
                           style: defaultRowTextStyleRegular,
                         ),
                       ),
@@ -474,7 +487,8 @@ class _PointingPageState extends State<PointingPage> {
                     },
                     builder: (context, state) {
                       if (state is FetchedPointState) {
-                        initPDF(state.points);
+                        initPDF(
+                            state.points, state.totalSelf, state.totalFinal);
                         return FormExtPoint(
                           points: state.points,
                           student: student,

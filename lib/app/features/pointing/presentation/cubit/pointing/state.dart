@@ -8,6 +8,12 @@ class FetchingPointState extends PointingState {}
 
 class FetchedPointState extends PointingState {
   List<PointExt> points;
+  int totalSelf;
+  int totalFinal;
 
-  FetchedPointState({required this.points});
+  FetchedPointState({
+    required this.points,
+    required this.totalFinal,
+    required this.totalSelf,
+  });
 }
