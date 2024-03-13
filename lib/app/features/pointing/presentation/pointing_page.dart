@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/material.dart' hide Border, BorderStyle;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
@@ -33,6 +34,7 @@ class _PointingPageState extends State<PointingPage> {
 
   Future<void> initPDF(
       List<PointExt> data, int totalSelf, int totalFinal) async {
+    genExcel();
     final font = await rootBundle.load("fonts/Lora-Regular.ttf");
     final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
     final ttfRegular = pw.Font.ttf(font);
@@ -93,12 +95,13 @@ class _PointingPageState extends State<PointingPage> {
             ),
             pw.SizedBox(height: 24),
             pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.Text("PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN",
-                      style: defaultHeaderTextStyleBold.copyWith(fontSize: 13))
-                ]),
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Text("PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN",
+                    style: defaultHeaderTextStyleBold.copyWith(fontSize: 13))
+              ],
+            ),
             pw.SizedBox(height: 4),
             pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -185,7 +188,8 @@ class _PointingPageState extends State<PointingPage> {
                         alignment: pw.Alignment.center,
                         padding: const pw.EdgeInsets.all(8),
                         decoration: pw.BoxDecoration(
-                            border: pw.Border.all(color: PdfColors.black)),
+                          border: pw.Border.all(color: PdfColors.black),
+                        ),
                         child: pw.Text("Điểm quy định",
                             textAlign: pw.TextAlign.center,
                             style: defaultHeaderTextStyleBold),
@@ -450,6 +454,65 @@ class _PointingPageState extends State<PointingPage> {
     //   fileBytes,
     //   filename: file.path.split('/').last,
     // );
+  }
+
+  Future<void> genExcel() async {
+    var excel = Excel.createExcel();
+    Sheet sheetObject = excel['Sheet1'];
+    CellStyle cellHeaderStyleBold = CellStyle(
+      backgroundColorHex: '#FFFFFFFF',
+      bold: true,
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      fontSize: 14,
+      fontFamily: getFontFamily(FontFamily.Arial),
+    );
+    CellStyle cellHeaderStyleRegular = CellStyle(
+      backgroundColorHex: '#FFFFFFFF',
+      fontSize: 14,
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      fontFamily: getFontFamily(FontFamily.Arial),
+    );
+
+    sheetObject.merge(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1),
+        CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0),
+        customValue: const TextCellValue('Mẫu 2: Tổng hợp KQRL'));
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1))
+        .cellStyle = cellHeaderStyleBold;
+    sheetObject.merge(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1),
+        CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0),
+        customValue: const TextCellValue('Mẫu 2: Tổng hợp KQRL'));
+
+    sheetObject.merge(
+        CellIndex.indexByString("A2"), CellIndex.indexByString("F2"),
+        customValue:
+            const TextCellValue('HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG'));
+    sheetObject.setMergedCellStyle(
+        CellIndex.indexByString('A2'),
+        cellHeaderStyleRegular.copyWith(
+            horizontalAlignVal: HorizontalAlign.Center,
+            verticalAlignVal: VerticalAlign.Center));
+
+    sheetObject.merge(
+        CellIndex.indexByString("A3"), CellIndex.indexByString("F3"),
+        customValue:
+            const TextCellValue('HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG'));
+    sheetObject.setMergedCellStyle(
+        CellIndex.indexByString('A3'),
+        cellHeaderStyleBold.copyWith(
+            horizontalAlignVal: HorizontalAlign.Center,
+            verticalAlignVal: VerticalAlign.Center));
+    final output = await getApplicationDocumentsDirectory();
+    final file =
+        File("${output.path}/${student.stuCode} - ${student.fullName}.xlsx");
+    print(file.path);
+    await file.writeAsBytes(excel.save()!);
   }
 
   @override
