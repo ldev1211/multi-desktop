@@ -31,10 +31,14 @@ class _PointingPageState extends State<PointingPage> {
   final PointingCubit _cubit = PointingCubit();
 
   String? path;
+  String nhhk = "20222";
+  late String semester = "I" * int.parse(nhhk.substring(4));
+  late String year =
+      "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
 
   Future<void> initPDF(
       List<PointExt> data, int totalSelf, int totalFinal) async {
-    genExcel();
+    genExcel(data);
     final font = await rootBundle.load("fonts/Lora-Regular.ttf");
     final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
     final ttfRegular = pw.Font.ttf(font);
@@ -48,10 +52,6 @@ class _PointingPageState extends State<PointingPage> {
         pw.TextStyle(fontSize: 7, font: ttfRegular, color: PdfColors.black);
     final defaultRowTextStyleBold =
         pw.TextStyle(fontSize: 7, font: ttfBold, color: PdfColors.black);
-    String nhhk = "20222";
-    String semester = "I" * int.parse(nhhk.substring(4));
-    String year =
-        "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
     double headerHeight = 60;
     double rowHeight = 30;
     double widthStt = 20;
@@ -456,63 +456,139 @@ class _PointingPageState extends State<PointingPage> {
     // );
   }
 
-  Future<void> genExcel() async {
-    var excel = Excel.createExcel();
-    Sheet sheetObject = excel['Sheet1'];
+  var excel = Excel.createExcel();
+
+  late Sheet sheetObject = excel['Sheet1'];
+
+  Future<void> genExcel(List<PointExt> data) async {
     CellStyle cellHeaderStyleBold = CellStyle(
       backgroundColorHex: '#FFFFFFFF',
       bold: true,
-      leftBorder: Border(borderStyle: BorderStyle.Thin),
-      rightBorder: Border(borderStyle: BorderStyle.Thin),
-      topBorder: Border(borderStyle: BorderStyle.Thin),
+      fontSize: 12,
       bottomBorder: Border(borderStyle: BorderStyle.Thin),
-      fontSize: 14,
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      fontFamily: getFontFamily(FontFamily.Arial),
+    );
+    CellStyle cellHeaderStyleBoldCt = CellStyle(
+      backgroundColorHex: '#FFFFFFFF',
+      fontSize: 12,
+      textWrapping: TextWrapping.WrapText,
+      bold: true,
+      bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      horizontalAlign: HorizontalAlign.Center,
+      verticalAlign: VerticalAlign.Center,
       fontFamily: getFontFamily(FontFamily.Arial),
     );
     CellStyle cellHeaderStyleRegular = CellStyle(
       backgroundColorHex: '#FFFFFFFF',
-      fontSize: 14,
-      leftBorder: Border(borderStyle: BorderStyle.Thin),
-      rightBorder: Border(borderStyle: BorderStyle.Thin),
-      topBorder: Border(borderStyle: BorderStyle.Thin),
+      fontSize: 12,
       bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      fontFamily: getFontFamily(FontFamily.Arial),
+    );
+    CellStyle cellHeaderStyleRegularCt = CellStyle(
+      backgroundColorHex: '#FFFFFFFF',
+      bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      topBorder: Border(borderStyle: BorderStyle.Thin),
+      rightBorder: Border(borderStyle: BorderStyle.Thin),
+      leftBorder: Border(borderStyle: BorderStyle.Thin),
+      fontSize: 12,
+      horizontalAlign: HorizontalAlign.Center,
+      verticalAlign: VerticalAlign.Center,
       fontFamily: getFontFamily(FontFamily.Arial),
     );
 
-    sheetObject.merge(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1),
-        CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0),
-        customValue: const TextCellValue('Mẫu 2: Tổng hợp KQRL'));
-    sheetObject
-        .cell(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1))
-        .cellStyle = cellHeaderStyleBold;
-    sheetObject.merge(CellIndex.indexByColumnRow(rowIndex: 0, columnIndex: 1),
-        CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0),
-        customValue: const TextCellValue('Mẫu 2: Tổng hợp KQRL'));
+    merge("B1", "C1", cellHeaderStyleBoldCt, 'Mẫu 2: Tổng hợp KQRL');
+    merge(("A2"), ("F2"), cellHeaderStyleRegularCt,
+        'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
+    merge(("A3"), ("F3"), cellHeaderStyleBoldCt,
+        'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
+    merge(("G2"), ("L2"), cellHeaderStyleRegularCt,
+        'CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM');
+    merge(("G3"), ("L3"), cellHeaderStyleBoldCt, 'Độc lập - Tự do - Hạnh phúc');
 
-    sheetObject.merge(
-        CellIndex.indexByString("A2"), CellIndex.indexByString("F2"),
-        customValue:
-            const TextCellValue('HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG'));
-    sheetObject.setMergedCellStyle(
-        CellIndex.indexByString('A2'),
-        cellHeaderStyleRegular.copyWith(
-            horizontalAlignVal: HorizontalAlign.Center,
-            verticalAlignVal: VerticalAlign.Center));
+    DateTime now = DateTime.now();
+    merge(("F5"), ("L5"), cellHeaderStyleRegularCt,
+        'Tp. Hồ Chí Minh, ngày ${now.day.toString().padLeft(2, '0')} tháng ${now.month.toString().padLeft(2, '0')} năm ${now.year}');
 
-    sheetObject.merge(
-        CellIndex.indexByString("A3"), CellIndex.indexByString("F3"),
-        customValue:
-            const TextCellValue('HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG'));
-    sheetObject.setMergedCellStyle(
-        CellIndex.indexByString('A3'),
-        cellHeaderStyleBold.copyWith(
-            horizontalAlignVal: HorizontalAlign.Center,
-            verticalAlignVal: VerticalAlign.Center));
+    merge(('A9'), ('C9'), cellHeaderStyleRegular, 'Lớp: ${student.classCode!}');
+
+    merge(
+        ('F9'), ('I9'), cellHeaderStyleRegular, 'Khoa: Công nghệ thông tin 2');
+
+    merge(('A10'), ('B10'), cellHeaderStyleRegular,
+        'Học kỳ: ${nhhk.substring(0, 1)}');
+
+    merge(('F10'), ('H10'), cellHeaderStyleRegular, 'Năm học: $year');
+
+    merge("A7", "L7", cellHeaderStyleBoldCt.copyWith(fontSizeVal: 15),
+        "TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN");
+
+    merge("A12", "A13", cellHeaderStyleBoldCt, 'TT');
+
+    merge("B12", "C13", cellHeaderStyleBoldCt, "Họ và tên");
+
+    merge("D12", "D13", cellHeaderStyleBoldCt, "Mã sinh viên");
+
+    merge("E12", "J12", cellHeaderStyleBoldCt, "Điểm đánh giá");
+
+    getCellData("E13").value = const TextCellValue("Nội dung 1");
+    getCellData("E13").cellStyle = cellHeaderStyleBoldCt;
+    getCellData("F13").value = const TextCellValue("Nội dung 2");
+    getCellData("F13").cellStyle = cellHeaderStyleBoldCt;
+    getCellData("G13").value = const TextCellValue("Nội dung 3");
+    getCellData("G13").cellStyle = cellHeaderStyleBoldCt;
+    getCellData("H13").value = const TextCellValue("Nội dung 4");
+    getCellData("H13").cellStyle = cellHeaderStyleBoldCt;
+    getCellData("I13").value = const TextCellValue("Nội dung 5");
+    getCellData("I13").cellStyle = cellHeaderStyleBoldCt;
+    getCellData("J13").value = const TextCellValue("Tổng điểm");
+    getCellData("J13").cellStyle = cellHeaderStyleBoldCt;
+    merge("K12", "K13", cellHeaderStyleBoldCt, "XẾP LOẠI RÈN LUYỆN");
+    merge("L12", "L13", cellHeaderStyleBoldCt, "GHI CHÚ");
+
+    getCellData("A14").value = const TextCellValue("1");
+    getCellData("A14").cellStyle = cellHeaderStyleRegularCt;
+
+    getCellData("B14").value = TextCellValue(student.fullName!
+        .split(' ')
+        .sublist(0, student.fullName!.split(' ').length - 1)
+        .join(' '));
+    getCellData("B14").cellStyle = cellHeaderStyleRegularCt;
+
+    getCellData("C14").value = TextCellValue(student.fullName!.split(' ').last);
+    getCellData("C14").cellStyle = cellHeaderStyleRegularCt;
+
+    for (int i = 0; i < data.length; ++i) {
+      if (data[i].type == TypeRow.TOTAL) {}
+    }
+
     final output = await getApplicationDocumentsDirectory();
     final file =
         File("${output.path}/${student.stuCode} - ${student.fullName}.xlsx");
     print(file.path);
     await file.writeAsBytes(excel.save()!);
+  }
+
+  Data getCellData(String string) {
+    return sheetObject.cell(getCell(string));
+  }
+
+  void merge(String start, String end, CellStyle style, String value) {
+    sheetObject.merge(getCell(start), getCell(end),
+        customValue: TextCellValue(value));
+    sheetObject.setMergedCellStyle(getCell(start), style);
+  }
+
+  CellIndex getCell(String string) {
+    return CellIndex.indexByString(string);
   }
 
   @override
