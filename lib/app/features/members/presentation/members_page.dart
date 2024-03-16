@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
+import 'package:multi_desktop/app/features/pointing/data/entity/data_gen_file.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
+import 'package:multi_desktop/util/generate_file_module.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
 
   @override
-  State<MembersPage> createState() => MembersPageState();
+  State<MembersPage> createState() => _MembersPageState();
 }
 
-class MembersPageState extends State<MembersPage> {
+class _MembersPageState extends State<MembersPage> {
   bool isLoading = true;
 
-  static List<StudentEntity>? members;
+  late List<StudentEntity> members;
 
   Future<void> getMembers() async {
     final response = await service.getMembers();
@@ -26,11 +28,21 @@ class MembersPageState extends State<MembersPage> {
         List<dynamic> rawMembers = response.data;
         members = [];
         for (var e in rawMembers) {
-          members!.add(StudentEntity.fromJson(e));
+          members.add(StudentEntity.fromJson(e));
         }
         isLoading = false;
+        startGenFile();
       });
     }
+  }
+
+  Future<void> startGenFile() async {
+    List<StudentPoint> studentPoints = [];
+    for (var e in members) {
+      final points = await fetchPoint(stuCode: e.stuCode);
+      studentPoints.add(StudentPoint(student: e, points: points));
+    }
+    genExcel(studentPoints);
   }
 
   @override
@@ -44,6 +56,7 @@ class MembersPageState extends State<MembersPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = 18;
+    startGenFile();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
