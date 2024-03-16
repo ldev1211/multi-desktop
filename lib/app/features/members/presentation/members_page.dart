@@ -11,13 +11,13 @@ class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
 
   @override
-  State<MembersPage> createState() => _MembersPageState();
+  State<MembersPage> createState() => MembersPageState();
 }
 
-class _MembersPageState extends State<MembersPage> {
+class MembersPageState extends State<MembersPage> {
   bool isLoading = true;
 
-  List<StudentEntity>? members;
+  static List<StudentEntity>? members;
 
   Future<void> getMembers() async {
     final response = await service.getMembers();

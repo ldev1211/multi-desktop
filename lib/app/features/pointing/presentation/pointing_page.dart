@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Border, BorderStyle;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
+import 'package:multi_desktop/app/features/pointing/data/entity/data_gen_file.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/form_ext_point.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/cubit/pointing/cubit.dart';
@@ -37,8 +38,10 @@ class _PointingPageState extends State<PointingPage> {
       "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
 
   Future<void> initPDF(
-      List<PointExt> data, int totalSelf, int totalFinal) async {
-    genExcel(data);
+      {required List<PointExt> data,
+      required int totalSelf,
+      required StudentEntity student,
+      required int totalFinal}) async {
     final font = await rootBundle.load("fonts/Lora-Regular.ttf");
     final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
     final ttfRegular = pw.Font.ttf(font);
@@ -460,7 +463,7 @@ class _PointingPageState extends State<PointingPage> {
 
   late Sheet sheetObject = excel['Sheet1'];
 
-  Future<void> genExcel(List<PointExt> data) async {
+  Future<void> genExcel(List<StudentPoint> data) async {
     CellStyle cellHeaderStyleBold = CellStyle(
       backgroundColorHex: '#FFFFFFFF',
       bold: true,
@@ -518,7 +521,7 @@ class _PointingPageState extends State<PointingPage> {
     merge(("F5"), ("L5"), cellHeaderStyleRegularCt,
         'Tp. Hồ Chí Minh, ngày ${now.day.toString().padLeft(2, '0')} tháng ${now.month.toString().padLeft(2, '0')} năm ${now.year}');
 
-    merge(('A9'), ('C9'), cellHeaderStyleRegular, 'Lớp: ${student.classCode!}');
+    merge(('A9'), ('C9'), cellHeaderStyleRegular, 'Lớp: ${student.classCode}');
 
     merge(
         ('F9'), ('I9'), cellHeaderStyleRegular, 'Khoa: Công nghệ thông tin 2');
@@ -554,20 +557,75 @@ class _PointingPageState extends State<PointingPage> {
     merge("K12", "K13", cellHeaderStyleBoldCt, "XẾP LOẠI RÈN LUYỆN");
     merge("L12", "L13", cellHeaderStyleBoldCt, "GHI CHÚ");
 
-    getCellData("A14").value = const TextCellValue("1");
-    getCellData("A14").cellStyle = cellHeaderStyleRegularCt;
-
-    getCellData("B14").value = TextCellValue(student.fullName!
-        .split(' ')
-        .sublist(0, student.fullName!.split(' ').length - 1)
-        .join(' '));
-    getCellData("B14").cellStyle = cellHeaderStyleRegularCt;
-
-    getCellData("C14").value = TextCellValue(student.fullName!.split(' ').last);
-    getCellData("C14").cellStyle = cellHeaderStyleRegularCt;
-
     for (int i = 0; i < data.length; ++i) {
-      if (data[i].type == TypeRow.TOTAL) {}
+      StudentPoint studentPoint = data[i];
+      int indexGen = 14 + i;
+      int totalSelf = 0;
+      int totalFinal = 0;
+      int totalFullSelf = 0;
+      int totalFullFinal = 0;
+      List<int> pointContentTotal = [];
+      for (var e in studentPoint.points) {
+        if (e.type == TypeRow.TOTAL) {
+          e.pointSelf = totalSelf;
+          e.pointFinal = totalFinal;
+          pointContentTotal.add(totalFinal);
+          totalSelf = 0;
+          totalFinal = 0;
+          continue;
+        }
+        if (e.pointRule != null) {
+          totalSelf += e.pointSelf ?? 0;
+          totalFinal += e.pointFinal ?? 0;
+          totalFullSelf += e.pointSelf ?? 0;
+          totalFullFinal += e.pointFinal ?? 0;
+        }
+      }
+      await initPDF(
+        student: studentPoint.student,
+        data: studentPoint.points,
+        totalSelf: totalFullSelf,
+        totalFinal: totalFullFinal,
+      );
+      getCellData("A$indexGen").value = const TextCellValue("1");
+      getCellData("A$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("B$indexGen").value = TextCellValue(student.fullName!
+          .split(' ')
+          .sublist(0, student.fullName!.split(' ').length - 1)
+          .join(' '));
+      getCellData("B$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("C$indexGen").value =
+          TextCellValue(student.fullName!.split(' ').last);
+      getCellData("C$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("D$indexGen").value = TextCellValue(student.stuCode);
+      getCellData("D$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("E$indexGen").value =
+          TextCellValue(pointContentTotal[0].toString());
+      getCellData("E$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("F$indexGen").value =
+          TextCellValue(pointContentTotal[1].toString());
+      getCellData("F$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("G$indexGen").value =
+          TextCellValue(pointContentTotal[2].toString());
+      getCellData("G$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("H$indexGen").value =
+          TextCellValue(pointContentTotal[3].toString());
+      getCellData("H$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("I$indexGen").value =
+          TextCellValue(pointContentTotal[4].toString());
+      getCellData("I$indexGen").cellStyle = cellHeaderStyleRegularCt;
+
+      getCellData("J$indexGen").value =
+          TextCellValue(totalFullFinal.toString());
+      getCellData("J$indexGen").cellStyle = cellHeaderStyleRegularCt;
     }
 
     final output = await getApplicationDocumentsDirectory();
@@ -596,7 +654,7 @@ class _PointingPageState extends State<PointingPage> {
     // TODO: implement initState
     super.initState();
     student = widget.stuCode;
-    _cubit.fetchPoint(stuCode: student.stuCode);
+    _cubit.fetchPoint(stuCode: student.stuCode, isEmit: true);
   }
 
   @override
@@ -626,8 +684,9 @@ class _PointingPageState extends State<PointingPage> {
                     },
                     builder: (context, state) {
                       if (state is FetchedPointState) {
-                        initPDF(
-                            state.points, state.totalSelf, state.totalFinal);
+                        genExcel([
+                          StudentPoint(student: student, points: state.points)
+                        ]);
                         return FormExtPoint(
                           points: state.points,
                           student: student,
