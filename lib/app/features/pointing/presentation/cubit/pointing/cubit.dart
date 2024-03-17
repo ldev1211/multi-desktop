@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/EPointExt.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
+import 'package:multi_desktop/app/features/pointing/data/model/response_cert.dart';
 import 'package:multi_desktop/main.dart';
 
 import 'state.dart';
@@ -41,5 +42,14 @@ class PointingCubit extends Cubit<PointingState> {
       totalSelf: totalFullSelf,
     ));
     return null;
+  }
+
+  late Cert cert;
+
+  Future<void> fetchCert({required String stuCode}) async {
+    emit(FetchingCertState());
+    ResponseCert responseCert = await service.fetchCert(stuCode);
+    cert = responseCert.data;
+    emit(FetchedCertState(cert));
   }
 }
