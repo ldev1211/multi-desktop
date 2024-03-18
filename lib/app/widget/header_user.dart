@@ -55,31 +55,6 @@ class HeaderUserPointExt extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Danh sách hoạt động",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

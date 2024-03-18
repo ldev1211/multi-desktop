@@ -19,7 +19,7 @@ class MembersPage extends StatefulWidget {
 class _MembersPageState extends State<MembersPage> {
   bool isLoading = true;
 
-  late List<StudentEntity> members;
+  List<StudentEntity> members = [];
 
   Future<void> getMembers() async {
     final response = await service.getMembers();
@@ -56,7 +56,6 @@ class _MembersPageState extends State<MembersPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = 18;
-    startGenFile();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(

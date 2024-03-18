@@ -10,6 +10,7 @@ import 'package:multi_desktop/app/widget/app_bar.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/app/widget/header_user.dart';
 import 'package:multi_desktop/util/app_colors.dart';
+import 'package:multi_desktop/util/ui_util.dart';
 
 class PointingPage extends StatefulWidget {
   PointingPage({super.key, required this.stuCode});
@@ -162,15 +163,23 @@ class _PointingPageState extends State<PointingPage> {
                                         itemCount:
                                             individuals[index].img.length,
                                         itemBuilder: (context, i) {
-                                          return SizedBox(
-                                            width: size.width * 0.18,
-                                            height: size.width * 0.18,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: Image.network(
-                                                individuals[index].img[i],
-                                                fit: BoxFit.cover,
+                                          return GestureDetector(
+                                            onTap: () {
+                                              UIUtil.showDialogImage(
+                                                context: context,
+                                                url: individuals[index].img[i],
+                                              );
+                                            },
+                                            child: SizedBox(
+                                              width: size.width * 0.18,
+                                              height: size.width * 0.18,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.network(
+                                                  individuals[index].img[i],
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                           );

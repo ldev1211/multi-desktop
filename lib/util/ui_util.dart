@@ -25,6 +25,37 @@ class UIUtil {
     );
   }
 
+  static void showDialogImage(
+      {required BuildContext context, required String url}) {
+    Size size = MediaQuery.of(context).size;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: Container(
+            height: size.height * 0.8,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(200)),
+            ),
+            padding: const EdgeInsets.all(12),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  url,
+                  height: size.height * 0.7,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   static void showDialogMessage(
       {required BuildContext context, required String message}) {
     showDialog(
