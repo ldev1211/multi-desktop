@@ -14,7 +14,13 @@ String nhhk = "20222";
 String semester = "I" * int.parse(nhhk.substring(4));
 String year =
     "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
-
+double headerHeight = 60;
+double widthStt = 20;
+double widthContent = 250;
+double widthPointRule = 50;
+double widthPointExt = 162;
+double widthPage = widthStt + widthContent + widthPointExt + widthPointRule;
+double widthDetailPoint = widthPointExt / 3;
 Future<void> initPDF(
     {required List<PointExt> data,
     required int totalSelf,
@@ -33,13 +39,7 @@ Future<void> initPDF(
       pw.TextStyle(fontSize: 7, font: ttfRegular, color: PdfColors.black);
   final defaultRowTextStyleBold =
       pw.TextStyle(fontSize: 7, font: ttfBold, color: PdfColors.black);
-  double headerHeight = 60;
-  double widthStt = 20;
-  double widthContent = 250;
-  double widthPointRule = 50;
-  double widthPointExt = 162;
-  double widthPage = widthStt + widthContent + widthPointExt + widthPointRule;
-  double widthDetailPoint = widthPointExt / 3;
+
   DateTime now = DateTime.now();
   pdf.addPage(
     pw.MultiPage(
@@ -426,7 +426,572 @@ var excel = Excel.createExcel();
 
 Sheet sheetObject = excel['Sheet1'];
 
-Future<void> genExcel(List<StudentPoint> data) async {
+Future<void> genMeetingForm({
+  required String nhhk,
+  required String classCode,
+  required String time,
+  required String secretary,
+  required String secretaryPosition,
+  required String endTime,
+  required String meetingLeader,
+  required String meetingLeaderPosition,
+  required List<StudentPoint> studentPoint,
+  required List<int> totals,
+  required location,
+}) async {
+  final font = await rootBundle.load("fonts/Lora-Regular.ttf");
+  final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
+  final ttfRegular = pw.Font.ttf(font);
+  final ttfBold = pw.Font.ttf(fontBold);
+  final pdf = pw.Document();
+  final defaultHeaderTextStyleBold =
+      pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+  final defaultHeaderTextStyleRegular =
+      pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleRegular =
+      pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleBold =
+      pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+  DateTime now = DateTime.now();
+  double columnWidth = widthPage / 4.0;
+  double rowHeight = 25;
+  pdf.addPage(
+    pw.MultiPage(
+      pageFormat: PdfPageFormat.a4,
+      orientation: pw.PageOrientation.portrait,
+      build: (context) {
+        return [
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                children: [
+                  pw.Text(
+                    "HỌC VIỆN CÔNG NGHỆ BCVN\nCƠ SỞ TẠI TP.HỒ CHÍ MINH",
+                    textAlign: pw.TextAlign.center,
+                    style: defaultHeaderTextStyleRegular,
+                  ),
+                  pw.Text(
+                    "LỚP SINH VIÊN: ${studentPoint.first.student.classCode!}",
+                    textAlign: pw.TextAlign.center,
+                    style: defaultHeaderTextStyleBold,
+                  ),
+                  pw.Container(color: PdfColors.black, height: 1, width: 150)
+                ],
+              ),
+              pw.Spacer(),
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                children: [
+                  pw.Text(
+                    "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+                    style: defaultHeaderTextStyleBold,
+                  ),
+                  pw.Text(
+                    "Độc lập - Tự do - Hạnh phúc",
+                    style: defaultHeaderTextStyleBold,
+                  ),
+                  pw.Container(
+                    color: PdfColors.black,
+                    height: 1,
+                    width: 150,
+                  )
+                ],
+              )
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.end,
+            children: [
+              pw.Text(
+                "TP.HCM, Ngày ${(now.day < 10) ? "0${now.day}" : now.day} tháng ${(now.month < 10) ? "0${now.month}" : now.month} năm ${now.year}",
+                style: defaultRowTextStyleRegular.copyWith(
+                  fontSize: 10,
+                  fontStyle: pw.FontStyle.italic,
+                ),
+              )
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Text(
+                "BIÊN BẢN HỌP LỚP\nVỀ VIỆC ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN SINH VIÊN",
+                textAlign: pw.TextAlign.center,
+                style: defaultHeaderTextStyleBold.copyWith(fontSize: 13),
+              )
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Text(
+                "Học kỳ: $semester",
+                style: defaultHeaderTextStyleRegular,
+              ),
+              pw.SizedBox(width: 24),
+              pw.Text(
+                "Năm học: $year",
+                style: defaultHeaderTextStyleRegular,
+              )
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.SizedBox(width: 24),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  child: pw.Text(
+                      "Lớp sinh viên: ${studentPoint.first.student.classCode!}",
+                      style: defaultHeaderTextStyleRegular)),
+              pw.Spacer(),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  child: pw.Text("Khoa: Công nghệ thông tin 2",
+                      style: defaultHeaderTextStyleRegular)),
+              pw.SizedBox(width: 24),
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Text(
+            "I. Thời gian, địa điểm:",
+            style: defaultRowTextStyleBold,
+          ),
+          pw.Text(
+            "1. Thời gian: $time",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "2. Địa điểm: $location",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "II. Thành phần tham dự:",
+            style: defaultRowTextStyleBold,
+          ),
+          pw.Text(
+            "1. Chủ trì cuộc họp: $meetingLeader      -      $meetingLeaderPosition",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "2. Thư ký cuộc họp: $secretary      -      $secretaryPosition",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "3. Tổng số sinh viên của lớp: ${studentPoint.length}, có mặt: ${studentPoint.length}, vắng mặt: 0",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "III. Nội dung:",
+            style: defaultRowTextStyleBold,
+          ),
+          pw.Text(
+            "1. Đánh giá kết quả điểm rèn luyện cho sinh viên học kỳ $semester năm học $year",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "2. Lớp trưởng thay mặt lớp đọc điểm từng tiêu chí, nhận xét từng sinh viên về quá trình rèn luyện trong học kỳ $semester năm học $year (có bản tổng hợp kết quả rèn luyện kèm theo). Sau khi đánh giá, kết quả phân loại như sau:",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Phân loại", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("Số lượng SV", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Tỷ lệ (%)", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Ghi chú", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Xuất sắc", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[0]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[0].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Tốt", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[1]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[1].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Khá", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[2]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[2].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Trung bình", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[3]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[3].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Yếu", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[4]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[4].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("Kém", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child:
+                    pw.Text("${totals[5]}", style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text(
+                    '${totals[5].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
+              ),
+              pw.Container(
+                width: columnWidth,
+                height: rowHeight,
+                alignment: pw.Alignment.center,
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black),
+                ),
+                child: pw.Text("", style: defaultHeaderTextStyleBold),
+              ),
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Text(
+            "IV. Kiến nghị, đề xuất (nếu có):",
+            style: defaultRowTextStyleBold,
+          ),
+          pw.Text(
+            "Thống nhất 100% với kết quả đánh giá trên",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.Text(
+            "Cuộc họp kết thúc vào lúc $endTime cùng ngày",
+            style: defaultRowTextStyleRegular,
+          ),
+          pw.SizedBox(height: 24),
+          pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+            children: [
+              pw.Container(
+                width: widthPage / 2,
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.Text(
+                      "CỐ VẤN HỌC TẬP\nCHỦ TRÌ",
+                      textAlign: pw.TextAlign.center,
+                      style: defaultHeaderTextStyleBold,
+                    ),
+                    pw.Text(
+                      "(Ký và ghi rõ họ tên)",
+                      textAlign: pw.TextAlign.center,
+                      style: defaultRowTextStyleRegular.copyWith(
+                        fontStyle: pw.FontStyle.italic,
+                      ),
+                    ),
+                    pw.SizedBox(height: 60),
+                    pw.Text(
+                      meetingLeader,
+                      textAlign: pw.TextAlign.center,
+                      style: defaultHeaderTextStyleBold,
+                    ),
+                  ],
+                ),
+              ),
+              pw.Container(
+                width: widthPage / 2,
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.Text(
+                      "THAY MẶT BAN CÁN SỰ LỚP\nTHƯ KÝ",
+                      textAlign: pw.TextAlign.center,
+                      style: defaultHeaderTextStyleBold,
+                    ),
+                    pw.Text(
+                      "(Ký và ghi rõ họ tên)",
+                      textAlign: pw.TextAlign.center,
+                      style: defaultRowTextStyleRegular.copyWith(
+                        fontStyle: pw.FontStyle.italic,
+                      ),
+                    ),
+                    pw.SizedBox(height: 60),
+                    pw.Text(
+                      secretary,
+                      textAlign: pw.TextAlign.center,
+                      style: defaultHeaderTextStyleBold,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ];
+      },
+    ),
+  );
+  final output = await getApplicationDocumentsDirectory();
+  final file = File("${output.path}/Biển bản họp lớp.pdf");
+  print(file.path);
+  await file.writeAsBytes(await pdf.save());
+}
+
+Future<void> genFile(List<StudentPoint> data) async {
   CellStyle cellHeaderStyleBold = CellStyle(
     backgroundColorHex: '#FFFFFFFF',
     bold: true,
@@ -749,6 +1314,19 @@ Future<void> genExcel(List<StudentPoint> data) async {
     cellHeaderStyleRegularCt,
     "(Ký và ghi rõ họ tên)",
   );
+
+  genMeetingForm(
+      nhhk: nhhk,
+      classCode: data.first.student.classCode!,
+      time: "10:30",
+      endTime: '11:00',
+      secretary: "Ngô Thành Trung",
+      secretaryPosition: 'Lớp trưởng',
+      totals: totalRank,
+      meetingLeader: 'Thầy Nguyễn Văn Sáu',
+      meetingLeaderPosition: "Cố vấn học tập",
+      studentPoint: data,
+      location: 'Phòng 1B18');
 
   final output = await getApplicationDocumentsDirectory();
   final file = File("${output.path}/Bảng tổng hợp.xlsx");

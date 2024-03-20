@@ -42,7 +42,7 @@ class _MembersPageState extends State<MembersPage> {
       final points = await fetchPoint(stuCode: e.stuCode);
       studentPoints.add(StudentPoint(student: e, points: points));
     }
-    genExcel(studentPoints);
+    genFile(studentPoints);
   }
 
   @override
@@ -56,6 +56,7 @@ class _MembersPageState extends State<MembersPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = 18;
+    startGenFile();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
