@@ -3,11 +3,13 @@ import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dar
 import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/data_gen_file.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.dart';
+import 'package:multi_desktop/app/widget/app_button.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/generate_file_module.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
+import 'package:multi_desktop/util/ui_util.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
@@ -31,7 +33,6 @@ class _MembersPageState extends State<MembersPage> {
           members.add(StudentEntity.fromJson(e));
         }
         isLoading = false;
-        startGenFile();
       });
     }
   }
@@ -42,7 +43,7 @@ class _MembersPageState extends State<MembersPage> {
       final points = await fetchPoint(stuCode: e.stuCode);
       studentPoints.add(StudentPoint(student: e, points: points));
     }
-    genFile(studentPoints);
+    await genFile(studentPoints, controllers);
   }
 
   @override
@@ -52,11 +53,20 @@ class _MembersPageState extends State<MembersPage> {
     getMembers();
   }
 
+  List<TextEditingController> controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = 18;
-    startGenFile();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -94,12 +104,34 @@ class _MembersPageState extends State<MembersPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Danh sách lớp",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 26,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Danh sách lớp",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 26,
+                          ),
+                        ),
+                        const Spacer(),
+                        AppButton.buttonPrimary(
+                          height: 45,
+                          width: 200,
+                          text: "Xuất file điểm rèn luyện",
+                          onTap: () async {
+                            bool? isSubmit = await UIUtil.showDialogInputFile(
+                              context,
+                              controllers: controllers,
+                            );
+                            if (isSubmit == true) {
+                              UIUtil.showDialogLoading(context);
+                              await startGenFile();
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 12),
                     Row(

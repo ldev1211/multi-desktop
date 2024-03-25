@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
+import 'package:flutter/material.dart' hide Border, BorderStyle;
 import 'package:flutter/services.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/data_gen_file.dart';
@@ -991,7 +992,8 @@ Future<void> genMeetingForm({
   await file.writeAsBytes(await pdf.save());
 }
 
-Future<void> genFile(List<StudentPoint> data) async {
+Future<void> genFile(
+    List<StudentPoint> data, List<TextEditingController> controllers) async {
   CellStyle cellHeaderStyleBold = CellStyle(
     backgroundColorHex: '#FFFFFFFF',
     bold: true,
@@ -1318,15 +1320,15 @@ Future<void> genFile(List<StudentPoint> data) async {
   genMeetingForm(
       nhhk: nhhk,
       classCode: data.first.student.classCode!,
-      time: "10:30",
-      endTime: '11:00',
-      secretary: "Ngô Thành Trung",
-      secretaryPosition: 'Lớp trưởng',
+      time: controllers[4].text,
+      endTime: controllers[5].text,
+      secretary: controllers[2].text,
+      secretaryPosition: controllers[3].text,
       totals: totalRank,
-      meetingLeader: 'Thầy Nguyễn Văn Sáu',
-      meetingLeaderPosition: "Cố vấn học tập",
+      meetingLeader: controllers[0].text,
+      meetingLeaderPosition: controllers[1].text,
       studentPoint: data,
-      location: 'Phòng 1B18');
+      location: controllers[6].text);
 
   final output = await getApplicationDocumentsDirectory();
   final file = File("${output.path}/Bảng tổng hợp.xlsx");
