@@ -6,6 +6,7 @@ import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.d
 import 'package:multi_desktop/app/widget/app_button.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
+import 'package:multi_desktop/network/model/base_response.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/generate_file_module.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
@@ -73,8 +74,7 @@ class _MembersPageState extends State<MembersPage> {
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment:
-              (isLoading) ? MainAxisAlignment.center : MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -95,10 +95,7 @@ class _MembersPageState extends State<MembersPage> {
                 )
               ],
             ),
-            if (isLoading)
-              const Center(
-                child: AppProgress(),
-              ),
+            if (isLoading) const Center(child: AppProgress()),
             if (!isLoading)
               Expanded(
                 child: Column(
@@ -129,6 +126,25 @@ class _MembersPageState extends State<MembersPage> {
                               await startGenFile();
                               Navigator.pop(context);
                             }
+                          },
+                        ),
+                        const SizedBox(width: 24),
+                        AppButton.buttonPrimary(
+                          height: 45,
+                          width: 300,
+                          text: "Tạo mới đợt chấm điểm",
+                          onTap: () async {
+                            UIUtil.showDialogMessage(
+                              context: context,
+                              onOk: () async {
+                                UIUtil.showDialogLoading(context);
+                                BaseResponse response =
+                                    await service.initPointing();
+                                Navigator.pop(context);
+                              },
+                              message:
+                                  "Bạn có chắc muốn tạo mới đợt chấm?\nĐều này sẽ khiến toàn bộ dữ liệu của đợt chấm trước bị mất đi.",
+                            );
                           },
                         ),
                       ],
@@ -191,10 +207,10 @@ class _MembersPageState extends State<MembersPage> {
                     Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: members!.length,
+                        itemCount: members.length,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, i) {
-                          StudentEntity member = members![i];
+                          StudentEntity member = members[i];
                           return Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),

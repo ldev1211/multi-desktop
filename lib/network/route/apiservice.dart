@@ -36,4 +36,7 @@ abstract class ApiService {
 
   @POST('/point_ext/post_point')
   Future<BaseResponse> postPoint(@Body() Map<String, dynamic> body);
+
+  @POST('/point_ext/init')
+  Future<BaseResponse> initPointing();
 }

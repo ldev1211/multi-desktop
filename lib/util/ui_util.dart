@@ -332,8 +332,12 @@ class UIUtil {
     );
   }
 
-  static void showDialogMessage(
-      {required BuildContext context, required String message}) {
+  static void showDialogMessage({
+    required BuildContext context,
+    required String message,
+    Function? onOk,
+    Function? onCancel,
+  }) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -366,12 +370,23 @@ class UIUtil {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        if (onOk != null) onOk();
                       },
                       child: const Text(
-                        "OK",
+                        "Đồng ý",
                         style: TextStyle(color: AppColor.colorMain),
                       ),
-                    )
+                    ),
+                    const SizedBox(width: 42),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "Huỷ",
+                        style: TextStyle(color: AppColor.colorMain),
+                      ),
+                    ),
                   ],
                 )
               ],
