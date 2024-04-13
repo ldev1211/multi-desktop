@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/members/presentation/members_page.dart';
 import 'package:multi_desktop/main.dart';
+import 'package:multi_desktop/network/route/apiservice.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 import 'package:multi_desktop/util/ui_util.dart';
+import 'package:dio/dio.dart' as dio;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -75,8 +77,7 @@ class _LoginPage extends State<LoginPage> {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       border: Border.all(
-                        color:
-                            isFocusUsername ? AppColor.colorMain : Colors.grey,
+                        color: isFocusUsername ? AppColor.colorMain : Colors.grey,
                       ),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -122,9 +123,7 @@ class _LoginPage extends State<LoginPage> {
                     ),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
-                      border: Border.all(
-                          color:
-                              isFocusPass ? AppColor.colorMain : Colors.grey),
+                      border: Border.all(color: isFocusPass ? AppColor.colorMain : Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextField(
@@ -155,15 +154,11 @@ class _LoginPage extends State<LoginPage> {
                               ? Icon(
                                   Icons.remove_red_eye_outlined,
                                   size: 28,
-                                  color: isFocusPass
-                                      ? AppColor.colorMain
-                                      : Colors.black,
+                                  color: isFocusPass ? AppColor.colorMain : Colors.black,
                                 )
                               : SvgPicture.asset(
                                   'assets/svg/invisible.svg',
-                                  color: isFocusPass
-                                      ? AppColor.colorMain
-                                      : Colors.black,
+                                  color: isFocusPass ? AppColor.colorMain : Colors.black,
                                   fit: BoxFit.scaleDown,
                                   width: 12,
                                   height: 12,
@@ -182,47 +177,33 @@ class _LoginPage extends State<LoginPage> {
                   Container(
                     height: 45,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade400,
-                            offset: const Offset(0, 4),
-                            blurRadius: 12,
-                          )
-                        ],
-                        color: AppColor.colorMain,
-                        border: Border.all(color: Colors.orange),
-                        borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade400,
+                        offset: const Offset(0, 4),
+                        blurRadius: 12,
+                      )
+                    ], color: AppColor.colorMain, border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(12)),
                     child: InkWell(
                       onTap: () async {
-                        if (_textStuCodeController.text.isEmpty ||
-                            _textPasswordController.text.isEmpty) {
+                        if (_textStuCodeController.text.isEmpty || _textPasswordController.text.isEmpty) {
                           UIUtil.showToast("Vui lòng nhập đầy đủ thông tin");
                           return;
                         }
                         UIUtil.showDialogLoading(context);
-                        Map<String, String> body = {
-                          "mssv": _textStuCodeController.text,
-                          "password": _textPasswordController.text
-                        };
+                        Map<String, String> body = {"mssv": _textStuCodeController.text, "password": _textPasswordController.text};
                         final response = await service.login(body);
                         print(response);
                         if (!response.error) {
-                          PrefUtil.instance
-                              .setString("accessToken", response.accessToken!);
-                          StudentEntity student =
-                              StudentEntity.fromJson(response.data);
+                          PrefUtil.instance.setString("accessToken", response.accessToken!);
+                          StudentEntity student = StudentEntity.fromJson(response.data);
                           PrefUtil.instance.setString("mssv", student.stuCode);
+                          service = ApiService(dio.Dio(), baseUrl: url);
                           Navigator.pop(context);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MembersPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MembersPage()));
                         } else {
                           Navigator.pop(context);
-                          UIUtil.showDialogMessage(
-                              context: context,
-                              message: "Sai thông tin đăng nhập");
+                          UIUtil.showDialogMessage(context: context, message: "Sai thông tin đăng nhập");
                         }
                       },
                       child: Material(

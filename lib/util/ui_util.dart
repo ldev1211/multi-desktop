@@ -13,8 +13,7 @@ class UIUtil {
           backgroundColor: Colors.white,
           content: Container(
             height: 50,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(200))),
+            decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(200))),
             alignment: Alignment.center,
             child: const CircularProgressIndicator(
               color: AppColor.colorMain,
@@ -29,6 +28,7 @@ class UIUtil {
   static Future<bool?> showDialogInputFile(
     BuildContext context, {
     required List<TextEditingController> controllers,
+    required Function onClickOk,
   }) async {
     Size size = MediaQuery.of(context).size;
     double space = 21;
@@ -287,8 +287,8 @@ class UIUtil {
                       height: 45,
                       text: "OK",
                       onTap: () {
+                        onClickOk();
                         Navigator.pop(context);
-                        return true;
                       },
                     ),
                   ],
@@ -301,8 +301,7 @@ class UIUtil {
     );
   }
 
-  static void showDialogImage(
-      {required BuildContext context, required String url}) {
+  static void showDialogImage({required BuildContext context, required String url}) {
     Size size = MediaQuery.of(context).size;
     showDialog(
       context: context,

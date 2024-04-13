@@ -117,15 +117,15 @@ class _MembersPageState extends State<MembersPage> {
                           width: 200,
                           text: "Xuất file điểm rèn luyện",
                           onTap: () async {
-                            bool? isSubmit = await UIUtil.showDialogInputFile(
+                            UIUtil.showDialogInputFile(
                               context,
                               controllers: controllers,
+                              onClickOk: () async {
+                                UIUtil.showDialogLoading(context);
+                                await startGenFile();
+                                Navigator.pop(context);
+                              },
                             );
-                            if (isSubmit == true) {
-                              UIUtil.showDialogLoading(context);
-                              await startGenFile();
-                              Navigator.pop(context);
-                            }
                           },
                         ),
                         const SizedBox(width: 24),
