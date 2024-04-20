@@ -3,6 +3,7 @@ import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dar
 import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
 import 'package:multi_desktop/app/features/pointing/data/entity/data_gen_file.dart';
 import 'package:multi_desktop/app/features/pointing/presentation/pointing_page.dart';
+import 'package:multi_desktop/app/widget/app_avt.dart';
 import 'package:multi_desktop/app/widget/app_button.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
 import 'package:multi_desktop/main.dart';
@@ -38,13 +39,23 @@ class _MembersPageState extends State<MembersPage> {
     }
   }
 
-  Future<void> startGenFile() async {
+  Future<void> startGenFile(
+      {required Function(String) onGenerating,
+      required Function onDone}) async {
     List<StudentPoint> studentPoints = [];
+    onGenerating("Đang truy vấn điểm từ hệ thống...");
     for (var e in members) {
       final points = await fetchPoint(stuCode: e.stuCode);
       studentPoints.add(StudentPoint(student: e, points: points));
     }
-    await genFile(studentPoints, controllers);
+    await genFile(
+      studentPoints,
+      controllers,
+      onGenerating: (path) {
+        onGenerating("Đang xuất file $path");
+      },
+      onDone: onDone,
+    );
   }
 
   @override
@@ -121,32 +132,105 @@ class _MembersPageState extends State<MembersPage> {
                               context,
                               controllers: controllers,
                               onClickOk: () async {
-                                UIUtil.showDialogLoading(context);
-                                await startGenFile();
-                                Navigator.pop(context);
+                                showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    bool isLoad = true;
+                                    bool isDone = false;
+                                    String? messageCurr;
+                                    return StatefulBuilder(
+                                      builder: (context, setState) {
+                                        if (isLoad) {
+                                          isLoad = false;
+                                          startGenFile(
+                                            onGenerating: (message) {
+                                              setState(() {
+                                                messageCurr = message;
+                                              });
+                                            },
+                                            onDone: () {
+                                              setState(() {
+                                                isDone = true;
+                                                Future.delayed(
+                                                  const Duration(seconds: 2),
+                                                  () => Navigator.pop(context),
+                                                );
+                                              });
+                                            },
+                                          );
+                                        }
+                                        return AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          content: Container(
+                                            width: size.width * 0.3,
+                                            height: size.height * 0.3,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(200)),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Center(
+                                                  child: isDone
+                                                      ? const Icon(
+                                                          Icons.check,
+                                                          color: AppColor
+                                                              .colorMain,
+                                                          size: 48,
+                                                        )
+                                                      : const CircularProgressIndicator(
+                                                          color: AppColor
+                                                              .colorMain,
+                                                          strokeWidth: 5,
+                                                        ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  messageCurr ??
+                                                      "Đang chuẩn bị...",
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
                               },
                             );
                           },
                         ),
                         const SizedBox(width: 24),
-                        AppButton.buttonPrimary(
-                          height: 45,
-                          width: 300,
-                          text: "Tạo mới đợt chấm điểm",
-                          onTap: () async {
-                            UIUtil.showDialogMessage(
-                              context: context,
-                              onOk: () async {
-                                UIUtil.showDialogLoading(context);
-                                BaseResponse response =
-                                    await service.initPointing();
-                                Navigator.pop(context);
-                              },
-                              message:
-                                  "Bạn có chắc muốn tạo mới đợt chấm?\nĐều này sẽ khiến toàn bộ dữ liệu của đợt chấm trước bị mất đi.",
-                            );
-                          },
-                        ),
+                        if (PrefUtil.instance.getInt("role") == 7)
+                          AppButton.buttonPrimary(
+                            height: 45,
+                            width: 300,
+                            text: "Tạo mới đợt chấm điểm",
+                            onTap: () async {
+                              UIUtil.showDialogMessage(
+                                context: context,
+                                onOk: () async {
+                                  UIUtil.showDialogLoading(context);
+                                  BaseResponse response =
+                                      await service.initPointing();
+                                  Navigator.pop(context);
+                                },
+                                message:
+                                    "Bạn có chắc muốn tạo mới đợt chấm?\nĐều này sẽ khiến toàn bộ dữ liệu của đợt chấm trước bị mất đi.",
+                              );
+                            },
+                          ),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -161,9 +245,7 @@ class _MembersPageState extends State<MembersPage> {
                           width: size.width * 0.04,
                           height: size.width * 0.04,
                         ),
-                        const SizedBox(
-                          width: 12,
-                        ),
+                        const SizedBox(width: 12),
                         Container(
                           width: size.width * 0.07,
                           alignment: Alignment.center,
@@ -221,12 +303,10 @@ class _MembersPageState extends State<MembersPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
+                                AppCircleAvt(
+                                  url: member.avt!,
                                   width: size.width * 0.04,
                                   height: size.width * 0.04,
-                                  child: CircleAvatar(
-                                    backgroundImage: NetworkImage(member.avt!),
-                                  ),
                                 ),
                                 const SizedBox(
                                   width: 12,
@@ -242,9 +322,7 @@ class _MembersPageState extends State<MembersPage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
+                                const SizedBox(width: 12),
                                 SizedBox(
                                   width: size.width * 0.4,
                                   child: Text(

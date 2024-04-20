@@ -13,7 +13,8 @@ import 'package:pdf/widgets.dart' as pw;
 
 String nhhk = "20222";
 String semester = "I" * int.parse(nhhk.substring(4));
-String year = "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
+String year =
+    "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
 double headerHeight = 60;
 double widthStt = 20;
 double widthContent = 250;
@@ -21,16 +22,30 @@ double widthPointRule = 50;
 double widthPointExt = 162;
 double widthPage = widthStt + widthContent + widthPointExt + widthPointRule;
 double widthDetailPoint = widthPointExt / 3;
-Future<void> initPDF({required List<PointExt> data, required int totalSelf, required StudentEntity student, required int totalFinal}) async {
+Future<void> initPDF({
+  required List<PointExt> data,
+  required int totalSelf,
+  required StudentEntity student,
+  required int totalFinal,
+  required Function(String) onGenerating,
+}) async {
+  final output = await getApplicationDocumentsDirectory();
+  String finalPath =
+      "${output.path}/Multimedia-DRL/${student.stuCode} - ${student.fullName}.pdf";
+  onGenerating(finalPath);
   final font = await rootBundle.load("fonts/Lora-Regular.ttf");
   final fontBold = await rootBundle.load("fonts/Lora-Bold.ttf");
   final ttfRegular = pw.Font.ttf(font);
   final ttfBold = pw.Font.ttf(fontBold);
   final pdf = pw.Document();
-  final defaultHeaderTextStyleBold = pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
-  final defaultHeaderTextStyleRegular = pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
-  final defaultRowTextStyleRegular = pw.TextStyle(fontSize: 7, font: ttfRegular, color: PdfColors.black);
-  final defaultRowTextStyleBold = pw.TextStyle(fontSize: 7, font: ttfBold, color: PdfColors.black);
+  final defaultHeaderTextStyleBold =
+      pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+  final defaultHeaderTextStyleRegular =
+      pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleRegular =
+      pw.TextStyle(fontSize: 7, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleBold =
+      pw.TextStyle(fontSize: 7, font: ttfBold, color: PdfColors.black);
 
   DateTime now = DateTime.now();
   pdf.addPage(
@@ -42,40 +57,60 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
-              pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
-                pw.Text("HỌC VIỆN CN BƯU CHÍNH VIỄN THÔNG", style: defaultHeaderTextStyleBold),
-                pw.Text("HỌC VIỆN CN BCVN CƠ SỞ TẠI TP. HCM", style: defaultHeaderTextStyleBold),
-                pw.Container(color: PdfColors.black, height: 1, width: 150)
-              ]),
+              pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.Text("HỌC VIỆN CN BƯU CHÍNH VIỄN THÔNG",
+                        style: defaultHeaderTextStyleBold),
+                    pw.Text("HỌC VIỆN CN BCVN CƠ SỞ TẠI TP. HCM",
+                        style: defaultHeaderTextStyleBold),
+                    pw.Container(color: PdfColors.black, height: 1, width: 150)
+                  ]),
               pw.Spacer(),
-              pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
-                pw.Text("CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM", style: defaultHeaderTextStyleBold),
-                pw.Text("Độc lập - Tự do - Hạnh phúc", style: defaultHeaderTextStyleBold),
-                pw.Container(color: PdfColors.black, height: 1, width: 150)
-              ])
+              pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.Text("CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+                        style: defaultHeaderTextStyleBold),
+                    pw.Text("Độc lập - Tự do - Hạnh phúc",
+                        style: defaultHeaderTextStyleBold),
+                    pw.Container(color: PdfColors.black, height: 1, width: 150)
+                  ])
             ],
           ),
           pw.SizedBox(height: 24),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.center,
             crossAxisAlignment: pw.CrossAxisAlignment.center,
-            children: [pw.Text("PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN", style: defaultHeaderTextStyleBold.copyWith(fontSize: 13))],
+            children: [
+              pw.Text("PHIẾU ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN",
+                  style: defaultHeaderTextStyleBold.copyWith(fontSize: 13))
+            ],
           ),
           pw.SizedBox(height: 4),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
-            pw.Text("Học kỳ: $semester", style: defaultHeaderTextStyleBold),
-            pw.SizedBox(width: 24),
-            pw.Text("Năm học: $year", style: defaultHeaderTextStyleBold)
-          ]),
+          pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Text("Học kỳ: $semester", style: defaultHeaderTextStyleBold),
+                pw.SizedBox(width: 24),
+                pw.Text("Năm học: $year", style: defaultHeaderTextStyleBold)
+              ]),
           pw.SizedBox(height: 8),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.center,
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.SizedBox(width: 24),
-              pw.Container(width: widthPage * 0.4, child: pw.Text("Họ và tên: ${student.fullName}", style: defaultHeaderTextStyleRegular)),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  child: pw.Text("Họ và tên: ${student.fullName}",
+                      style: defaultHeaderTextStyleRegular)),
               pw.Spacer(),
-              pw.Container(width: widthPage * 0.4, child: pw.Text("Ngày sinh: ${student.birthDay}", style: defaultHeaderTextStyleRegular)),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  child: pw.Text("Ngày sinh: ${student.birthDay}",
+                      style: defaultHeaderTextStyleRegular)),
               pw.SizedBox(width: 24),
             ],
           ),
@@ -86,9 +121,16 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
             children: [
               pw.SizedBox(width: 24),
               pw.Container(
-                  width: widthPage * 0.4, height: 20, child: pw.Text("Mã số sinh viên: ${student.stuCode}", style: defaultHeaderTextStyleRegular)),
+                  width: widthPage * 0.4,
+                  height: 20,
+                  child: pw.Text("Mã số sinh viên: ${student.stuCode}",
+                      style: defaultHeaderTextStyleRegular)),
               pw.Spacer(),
-              pw.Container(width: widthPage * 0.4, height: 20, child: pw.Text("Lớp: ${student.classCode}", style: defaultHeaderTextStyleRegular)),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  height: 20,
+                  child: pw.Text("Lớp: ${student.classCode}",
+                      style: defaultHeaderTextStyleRegular)),
               pw.SizedBox(width: 24),
             ],
           ),
@@ -106,7 +148,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       width: widthStt,
                       height: headerHeight,
                       alignment: pw.Alignment.center,
-                      decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black)),
+                      decoration: pw.BoxDecoration(
+                          border: pw.Border.all(color: PdfColors.black)),
                       child: pw.Text(
                         "TT",
                         style: defaultHeaderTextStyleBold,
@@ -116,7 +159,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       width: widthContent,
                       height: headerHeight,
                       alignment: pw.Alignment.center,
-                      decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black)),
+                      decoration: pw.BoxDecoration(
+                          border: pw.Border.all(color: PdfColors.black)),
                       child: pw.Text(
                         "Nội dung đánh giá",
                         style: defaultHeaderTextStyleBold,
@@ -130,7 +174,9 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       decoration: pw.BoxDecoration(
                         border: pw.Border.all(color: PdfColors.black),
                       ),
-                      child: pw.Text("Điểm quy định", textAlign: pw.TextAlign.center, style: defaultHeaderTextStyleBold),
+                      child: pw.Text("Điểm quy định",
+                          textAlign: pw.TextAlign.center,
+                          style: defaultHeaderTextStyleBold),
                     ),
                     pw.Container(
                       width: widthPointExt,
@@ -146,7 +192,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                             width: widthPointExt,
                             height: headerHeight * 0.25,
                             alignment: pw.Alignment.center,
-                            decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black)),
+                            decoration: pw.BoxDecoration(
+                                border: pw.Border.all(color: PdfColors.black)),
                             child: pw.Text(
                               "Điểm đánh giá",
                               textAlign: pw.TextAlign.center,
@@ -239,7 +286,9 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       width: widthContent,
                       child: pw.Text(
                         (i < data.length) ? data[i].content : "TỔNG CỘNG",
-                        style: (i == data.length || data[i].type == TypeRow.HEADER || data[i].type == TypeRow.TOTAL)
+                        style: (i == data.length ||
+                                data[i].type == TypeRow.HEADER ||
+                                data[i].type == TypeRow.TOTAL)
                             ? defaultRowTextStyleBold
                             : defaultRowTextStyleRegular,
                       ),
@@ -253,7 +302,9 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                                 ? "${data[i].pointRule} điểm"
                                 : ''
                             : '100',
-                        style: i == data.length || data[i].type == TypeRow.TOTAL ? defaultRowTextStyleBold : defaultRowTextStyleRegular,
+                        style: i == data.length || data[i].type == TypeRow.TOTAL
+                            ? defaultRowTextStyleBold
+                            : defaultRowTextStyleRegular,
                       ),
                     ),
                     pw.Container(
@@ -261,7 +312,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       alignment: pw.Alignment.center,
                       child: pw.Text(
                         (i < data.length)
-                            ? (data[i].type == TypeRow.HEADER || data[i].pointRule == null)
+                            ? (data[i].type == TypeRow.HEADER ||
+                                    data[i].pointRule == null)
                                 ? ""
                                 : "${data[i].pointSelf ?? '0'}"
                             : totalSelf.toString(),
@@ -273,7 +325,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
                       alignment: pw.Alignment.center,
                       child: pw.Text(
                         (i < data.length)
-                            ? (data[i].type == TypeRow.HEADER || data[i].pointRule == null)
+                            ? (data[i].type == TypeRow.HEADER ||
+                                    data[i].pointRule == null)
                                 ? ""
                                 : "${data[i].pointFinal ?? '0'}"
                             : totalFinal.toString(),
@@ -369,9 +422,8 @@ Future<void> initPDF({required List<PointExt> data, required int totalSelf, requ
       },
     ),
   );
-  final output = await getApplicationDocumentsDirectory();
-  final file = File("${output.path}/Multimedia-DRL/${student.stuCode} - ${student.fullName}.pdf");
-  print(file.path);
+
+  final file = File(finalPath);
   await file.writeAsBytes(await pdf.save());
 }
 
@@ -397,10 +449,14 @@ Future<void> genMeetingForm({
   final ttfRegular = pw.Font.ttf(font);
   final ttfBold = pw.Font.ttf(fontBold);
   final pdf = pw.Document();
-  final defaultHeaderTextStyleBold = pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
-  final defaultHeaderTextStyleRegular = pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
-  final defaultRowTextStyleRegular = pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
-  final defaultRowTextStyleBold = pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+  final defaultHeaderTextStyleBold =
+      pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
+  final defaultHeaderTextStyleRegular =
+      pw.TextStyle(fontSize: 11, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleRegular =
+      pw.TextStyle(fontSize: 10, font: ttfRegular, color: PdfColors.black);
+  final defaultRowTextStyleBold =
+      pw.TextStyle(fontSize: 10, font: ttfBold, color: PdfColors.black);
   DateTime now = DateTime.now();
   double columnWidth = widthPage / 4.0;
   double rowHeight = 25;
@@ -499,9 +555,14 @@ Future<void> genMeetingForm({
               pw.SizedBox(width: 24),
               pw.Container(
                   width: widthPage * 0.4,
-                  child: pw.Text("Lớp sinh viên: ${studentPoint.first.student.classCode!}", style: defaultHeaderTextStyleRegular)),
+                  child: pw.Text(
+                      "Lớp sinh viên: ${studentPoint.first.student.classCode!}",
+                      style: defaultHeaderTextStyleRegular)),
               pw.Spacer(),
-              pw.Container(width: widthPage * 0.4, child: pw.Text("Khoa: Công nghệ thông tin 2", style: defaultHeaderTextStyleRegular)),
+              pw.Container(
+                  width: widthPage * 0.4,
+                  child: pw.Text("Khoa: Công nghệ thông tin 2",
+                      style: defaultHeaderTextStyleRegular)),
               pw.SizedBox(width: 24),
             ],
           ),
@@ -566,7 +627,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("Số lượng SV", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("Số lượng SV", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -607,7 +669,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[0]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[0]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -616,7 +679,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[0].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[0].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -648,7 +713,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[1]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[1]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -657,7 +723,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[1].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[1].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -689,7 +757,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[2]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[2]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -698,7 +767,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[2].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[2].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -730,7 +801,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[3]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[3]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -739,7 +811,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[3].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[3].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -771,7 +845,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[4]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[4]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -780,7 +855,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[4].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[4].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -812,7 +889,8 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text("${totals[5]}", style: defaultHeaderTextStyleBold),
+                child:
+                    pw.Text("${totals[5]}", style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -821,7 +899,9 @@ Future<void> genMeetingForm({
                 decoration: pw.BoxDecoration(
                   border: pw.Border.all(color: PdfColors.black),
                 ),
-                child: pw.Text('${totals[5].toDouble() / studentPoint.length * 100}', style: defaultHeaderTextStyleBold),
+                child: pw.Text(
+                    '${totals[5].toDouble() / studentPoint.length * 100}',
+                    style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
                 width: columnWidth,
@@ -912,11 +992,12 @@ Future<void> genMeetingForm({
   );
   final output = await getApplicationDocumentsDirectory();
   final file = File("${output.path}/Multimedia-DRL/Biển bản họp lớp.pdf");
-  print(file.path);
   await file.writeAsBytes(await pdf.save());
 }
 
-Future<void> genFile(List<StudentPoint> data, List<TextEditingController> controllers) async {
+Future<void> genFile(
+    List<StudentPoint> data, List<TextEditingController> controllers,
+    {required Function(String) onGenerating, required Function onDone}) async {
   CellStyle cellHeaderStyleBold = CellStyle(
     backgroundColorHex: '#FFFFFFFF',
     bold: true,
@@ -962,24 +1043,30 @@ Future<void> genFile(List<StudentPoint> data, List<TextEditingController> contro
   );
 
   merge("B1", "C1", cellHeaderStyleBoldCt, 'Mẫu 2: Tổng hợp KQRL');
-  merge(("A2"), ("F2"), cellHeaderStyleRegularCt, 'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
-  merge(("A3"), ("F3"), cellHeaderStyleBoldCt, 'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
-  merge(("G2"), ("L2"), cellHeaderStyleRegularCt, 'CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM');
+  merge(("A2"), ("F2"), cellHeaderStyleRegularCt,
+      'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
+  merge(("A3"), ("F3"), cellHeaderStyleBoldCt,
+      'HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG');
+  merge(("G2"), ("L2"), cellHeaderStyleRegularCt,
+      'CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM');
   merge(("G3"), ("L3"), cellHeaderStyleBoldCt, 'Độc lập - Tự do - Hạnh phúc');
 
   DateTime now = DateTime.now();
   merge(("F5"), ("L5"), cellHeaderStyleRegularCt,
       'Tp. Hồ Chí Minh, ngày ${now.day.toString().padLeft(2, '0')} tháng ${now.month.toString().padLeft(2, '0')} năm ${now.year}');
 
-  merge(('A9'), ('C9'), cellHeaderStyleRegular, 'Lớp: ${data[0].student.classCode}');
+  merge(('A9'), ('C9'), cellHeaderStyleRegular,
+      'Lớp: ${data[0].student.classCode}');
 
   merge(('F9'), ('I9'), cellHeaderStyleRegular, 'Khoa: Công nghệ thông tin 2');
 
-  merge(('A10'), ('B10'), cellHeaderStyleRegular, 'Học kỳ: ${nhhk.substring(0, 1)}');
+  merge(('A10'), ('B10'), cellHeaderStyleRegular,
+      'Học kỳ: ${nhhk.substring(0, 1)}');
 
   merge(('F10'), ('H10'), cellHeaderStyleRegular, 'Năm học: $year');
 
-  merge("A7", "L7", cellHeaderStyleBoldCt.copyWith(fontSizeVal: 15), "TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN");
+  merge("A7", "L7", cellHeaderStyleBoldCt.copyWith(fontSizeVal: 15),
+      "TỔNG HỢP KẾT QUẢ RÈN LUYỆN CỦA SINH VIÊN");
 
   merge("A12", "A13", cellHeaderStyleBoldCt, 'TT');
 
@@ -1030,38 +1117,52 @@ Future<void> genFile(List<StudentPoint> data, List<TextEditingController> contro
         totalFullFinal += e.pointFinal ?? 0;
       }
     }
+
     await initPDF(
       student: studentPoint.student,
       data: studentPoint.points,
       totalSelf: totalFullSelf,
       totalFinal: totalFullFinal,
+      onGenerating: (path) {
+        onGenerating(path);
+      },
     );
     getCellData("A$indexGen").value = TextCellValue("${i + 1}");
     getCellData("A$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("B$indexGen").value =
-        TextCellValue(studentPoint.student.fullName!.split(' ').sublist(0, studentPoint.student.fullName!.split(' ').length - 1).join(' '));
+    getCellData("B$indexGen").value = TextCellValue(studentPoint
+        .student.fullName!
+        .split(' ')
+        .sublist(0, studentPoint.student.fullName!.split(' ').length - 1)
+        .join(' '));
     getCellData("B$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("C$indexGen").value = TextCellValue(studentPoint.student.fullName!.split(' ').last);
+    getCellData("C$indexGen").value =
+        TextCellValue(studentPoint.student.fullName!.split(' ').last);
     getCellData("C$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("D$indexGen").value = TextCellValue(studentPoint.student.stuCode);
+    getCellData("D$indexGen").value =
+        TextCellValue(studentPoint.student.stuCode);
     getCellData("D$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("E$indexGen").value = TextCellValue(pointContentTotal[0].toString());
+    getCellData("E$indexGen").value =
+        TextCellValue(pointContentTotal[0].toString());
     getCellData("E$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("F$indexGen").value = TextCellValue(pointContentTotal[1].toString());
+    getCellData("F$indexGen").value =
+        TextCellValue(pointContentTotal[1].toString());
     getCellData("F$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("G$indexGen").value = TextCellValue(pointContentTotal[2].toString());
+    getCellData("G$indexGen").value =
+        TextCellValue(pointContentTotal[2].toString());
     getCellData("G$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("H$indexGen").value = TextCellValue(pointContentTotal[3].toString());
+    getCellData("H$indexGen").value =
+        TextCellValue(pointContentTotal[3].toString());
     getCellData("H$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("I$indexGen").value = TextCellValue(pointContentTotal[4].toString());
+    getCellData("I$indexGen").value =
+        TextCellValue(pointContentTotal[4].toString());
     getCellData("I$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
     getCellData("J$indexGen").value = TextCellValue(totalFullFinal.toString());
@@ -1107,73 +1208,85 @@ Future<void> genFile(List<StudentPoint> data, List<TextEditingController> contro
   getCellData("D$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
   indexRowCont++;
-  getCellData("A$indexRowCont").value =
-      const TextCellValue("Lưu ý: Kết quả điểm rèn luyện được phân thành các loại: Xuất sắc, Tốt, Khá, Trung bình, Yếu, Kém");
+  getCellData("A$indexRowCont").value = const TextCellValue(
+      "Lưu ý: Kết quả điểm rèn luyện được phân thành các loại: Xuất sắc, Tốt, Khá, Trung bình, Yếu, Kém");
   getCellData("A$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại Xuất sắc: Từ 90- đến 100 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại Xuất sắc: Từ 90- đến 100 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[0].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[0].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[0].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại Tốt: Từ 80 đến dưới 90 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại Tốt: Từ 80 đến dưới 90 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[1].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[1].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[1].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại Khá: Từ 65 đến dưới 80 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại Khá: Từ 65 đến dưới 80 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[2].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[2].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[2].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại Trung bình: Từ 50 đến dưới 65 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại Trung bình: Từ 50 đến dưới 65 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[3].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[3].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[3].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại Yếu: Từ 35 đến dưới 50 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại Yếu: Từ 35 đến dưới 50 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[4].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[4].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[4].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
-  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular, "_ Loại kém: Dưới 35 điểm");
+  merge('C$indexRowCont', 'F$indexRowCont', cellHeaderStyleRegular,
+      "_ Loại kém: Dưới 35 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[5].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value = DoubleCellValue(totalRank[5].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value =
+      DoubleCellValue(totalRank[5].toDouble() / data.length * 100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1227,8 +1340,8 @@ Future<void> genFile(List<StudentPoint> data, List<TextEditingController> contro
 
   final output = await getApplicationDocumentsDirectory();
   final file = File("${output.path}/Multimedia-DRL/Bảng tổng hợp.xlsx");
-  print(file.path);
   await file.writeAsBytes(excel.save()!);
+  onDone();
 }
 
 Data getCellData(String string) {
@@ -1236,7 +1349,8 @@ Data getCellData(String string) {
 }
 
 void merge(String start, String end, CellStyle style, String value) {
-  sheetObject.merge(getCell(start), getCell(end), customValue: TextCellValue(value));
+  sheetObject.merge(getCell(start), getCell(end),
+      customValue: TextCellValue(value));
   sheetObject.setMergedCellStyle(getCell(start), style);
 }
 

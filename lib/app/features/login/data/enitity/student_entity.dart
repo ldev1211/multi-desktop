@@ -22,35 +22,21 @@ class StudentEntity {
   String? birthDay;
   @JsonKey(name: "avt")
   String? avt;
-  @JsonKey(name: "bch")
-  int? bch;
-  @JsonKey(name: "bcs")
-  int? bcs;
-  @JsonKey(name: "ctv")
-  int? ctv;
-  @JsonKey(name: "hide_pers_email")
-  int? isHideEmail;
-  @JsonKey(name: "hide_fb")
-  int? isHideFb;
-  @JsonKey(name: "hide_phone")
-  int? isHidePhone;
+  @JsonKey(name: "role")
+  int? role;
 
-  StudentEntity(
-      {required this.stuCode,
-      this.fullName,
-      this.phoneNumber,
-      this.gender,
-      this.classCode,
-      this.personalEmail,
-      this.linkFb,
-      this.birthDay,
-      this.avt,
-      this.bch,
-      this.bcs,
-      this.ctv,
-      this.isHideEmail,
-      this.isHideFb,
-      this.isHidePhone});
+  StudentEntity({
+    required this.stuCode,
+    this.fullName,
+    this.phoneNumber,
+    this.gender,
+    this.classCode,
+    this.personalEmail,
+    this.linkFb,
+    this.birthDay,
+    this.avt,
+    this.role,
+  });
 
   factory StudentEntity.fromJson(Map<String, dynamic> json) =>
       _$StudentEntityFromJson(json);

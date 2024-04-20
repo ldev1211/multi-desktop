@@ -17,12 +17,7 @@ StudentEntity _$StudentEntityFromJson(Map<String, dynamic> json) =>
       linkFb: json['fb'] as String?,
       birthDay: json['ngaysinh'] as String?,
       avt: json['avt'] as String?,
-      bch: json['bch'] as int?,
-      bcs: json['bcs'] as int?,
-      ctv: json['ctv'] as int?,
-      isHideEmail: json['hide_pers_email'] as int?,
-      isHideFb: json['hide_fb'] as int?,
-      isHidePhone: json['hide_phone'] as int?,
+      role: json['role'] as int?,
     );
 
 Map<String, dynamic> _$StudentEntityToJson(StudentEntity instance) =>
@@ -36,10 +31,5 @@ Map<String, dynamic> _$StudentEntityToJson(StudentEntity instance) =>
       'fb': instance.linkFb,
       'ngaysinh': instance.birthDay,
       'avt': instance.avt,
-      'bch': instance.bch,
-      'bcs': instance.bcs,
-      'ctv': instance.ctv,
-      'hide_pers_email': instance.isHideEmail,
-      'hide_fb': instance.isHideFb,
-      'hide_phone': instance.isHidePhone,
+      'role': instance.role,
     };

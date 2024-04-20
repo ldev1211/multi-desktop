@@ -8,6 +8,7 @@ import 'package:multi_desktop/app/features/pointing/presentation/cubit/pointing/
 import 'package:multi_desktop/app/features/pointing/presentation/cubit/pointing/state.dart';
 import 'package:multi_desktop/app/widget/app_bar.dart';
 import 'package:multi_desktop/app/widget/app_progress.dart';
+import 'package:multi_desktop/app/widget/empty_data.dart';
 import 'package:multi_desktop/app/widget/header_user.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/ui_util.dart';
@@ -81,7 +82,7 @@ class _PointingPageState extends State<PointingPage> {
               ),
               const Spacer(),
               Container(
-                width: size.width * 0.3,
+                width: size.width * 0.35,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -103,94 +104,121 @@ class _PointingPageState extends State<PointingPage> {
                           children: [
                             const Text(
                               "Danh sách hoạt động Liên Chi Đoàn:",
-                              style: TextStyle(color: AppColor.colorMain),
+                              style: TextStyle(
+                                  color: AppColor.colorMain, fontSize: 16),
                             ),
                             const SizedBox(height: 12),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: majors.length,
-                              itemBuilder: (context, index) {
-                                return Text(
-                                  "${index + 1}/${majors[index].name}",
-                                  style: const TextStyle(color: Colors.black),
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 12),
-                            const Text(
-                              "Danh sách hoạt động tự khai của cá nhân",
-                              style: TextStyle(color: AppColor.colorMain),
-                            ),
-                            const SizedBox(height: 12),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: individuals.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  width: double.infinity,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        "Tên sự kiện: ${individuals[index].title}",
+                            (majors.isEmpty)
+                                ? Center(
+                                    child: ViewEmptyData(
+                                      text:
+                                          "Sinh viên chưa tham gia hoạt động nào của Liên Chi Đoàn",
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: majors.length,
+                                    itemBuilder: (context, index) {
+                                      return Text(
+                                        "${index + 1}/ ${majors[index].name}",
                                         style: const TextStyle(
                                           color: Colors.black,
-                                          fontSize: 16,
                                         ),
-                                      ),
-                                      const SizedBox(height: 24),
-                                      GridView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 4,
-                                          crossAxisSpacing: 12,
-                                          mainAxisSpacing: 8,
+                                      );
+                                    },
+                                  ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              "Danh sách hoạt động tự khai của cá nhân:",
+                              style: TextStyle(
+                                color: AppColor.colorMain,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            (individuals.isEmpty)
+                                ? Center(
+                                    child: ViewEmptyData(
+                                      text:
+                                          "Sinh viên không có hoạt động cá nhân nào",
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: individuals.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        width: double.infinity,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                         ),
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            individuals[index].img.length,
-                                        itemBuilder: (context, i) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              UIUtil.showDialogImage(
-                                                context: context,
-                                                url: individuals[index].img[i],
-                                              );
-                                            },
-                                            child: SizedBox(
-                                              width: size.width * 0.18,
-                                              height: size.width * 0.18,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: Image.network(
-                                                  individuals[index].img[i],
-                                                  fit: BoxFit.cover,
-                                                ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              "Tên sự kiện: ${individuals[index].title}",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
                                               ),
                                             ),
-                                          );
-                                        },
-                                      )
-                                    ],
+                                            const SizedBox(height: 24),
+                                            GridView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 4,
+                                                crossAxisSpacing: 12,
+                                                mainAxisSpacing: 8,
+                                              ),
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  individuals[index].img.length,
+                                              itemBuilder: (context, i) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    UIUtil.showDialogImage(
+                                                      context: context,
+                                                      url: individuals[index]
+                                                          .img[i],
+                                                    );
+                                                  },
+                                                  child: SizedBox(
+                                                    width: size.width * 0.18,
+                                                    height: size.width * 0.18,
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      child: Image.network(
+                                                        individuals[index]
+                                                            .img[i],
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
                           ],
                         ),
                       );

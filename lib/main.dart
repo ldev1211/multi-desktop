@@ -7,6 +7,7 @@ import 'package:multi_desktop/util/pref/pref_utils.dart';
 
 late ApiService service;
 const String url = 'http://localhost:3000/delegation_chief_role';
+// const String url = 'https://apildevmobile.com/delegation_chief_role';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
