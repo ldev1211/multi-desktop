@@ -66,6 +66,16 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/icon.png"
+
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -77,6 +87,7 @@ flutter:
   assets:
     - assets/
     - assets/image/
+    - assets/icon/
     - fonts/
   fonts:
     - family: BeVietnamPro
