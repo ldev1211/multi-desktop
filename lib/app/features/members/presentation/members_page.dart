@@ -152,6 +152,7 @@ class _MembersPageState extends State<MembersPage> {
                                             onDone: () {
                                               setState(() {
                                                 isDone = true;
+                                                messageCurr = "Đã hoàn thành.";
                                                 Future.delayed(
                                                   const Duration(seconds: 2),
                                                   () => Navigator.pop(context),
@@ -172,7 +173,7 @@ class _MembersPageState extends State<MembersPage> {
                                             alignment: Alignment.center,
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.center,
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
