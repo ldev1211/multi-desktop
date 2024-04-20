@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/login/data/enitity/student_entity.dart';
 import 'package:multi_desktop/app/features/login/presentation/login_page.dart';
@@ -12,6 +14,8 @@ import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/generate_file_module.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 import 'package:multi_desktop/util/ui_util.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
@@ -43,11 +47,13 @@ class _MembersPageState extends State<MembersPage> {
       {required Function(String) onGenerating,
       required Function onDone}) async {
     List<StudentPoint> studentPoints = [];
-    onGenerating("Đang truy vấn điểm từ hệ thống...");
     for (var e in members) {
+      onGenerating("Đang truy vấn điểm từ hệ thống...\n${e.fullName}");
       final points = await fetchPoint(stuCode: e.stuCode);
       studentPoints.add(StudentPoint(student: e, points: points));
     }
+    final output = await getApplicationDocumentsDirectory();
+    Directory("${output.path}/Multimedia-DRL").createSync();
     await genFile(
       studentPoints,
       controllers,
@@ -123,6 +129,17 @@ class _MembersPageState extends State<MembersPage> {
                           ),
                         ),
                         const Spacer(),
+                        AppButton.buttonSecondary(
+                          height: 45,
+                          width: 200,
+                          text: "Mở thư mục điểm rèn luyện",
+                          onTap: () async {
+                            final output =
+                                await getApplicationDocumentsDirectory();
+                            launch('${output.path}/Multimedia-DRL');
+                          },
+                        ),
+                        const SizedBox(width: 24),
                         AppButton.buttonPrimary(
                           height: 45,
                           width: 200,
@@ -195,6 +212,7 @@ class _MembersPageState extends State<MembersPage> {
                                                 Text(
                                                   messageCurr ??
                                                       "Đang chuẩn bị...",
+                                                  textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 14,
