@@ -97,129 +97,106 @@ class _PointingPageState extends State<PointingPage> {
                   builder: (context, state) {
                     if (state is FetchedCertState) {
                       List<Individual> individuals = state.cert.individual;
-                      List<Major> majors = state.cert.major;
                       return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Danh sách hoạt động Liên Chi Đoàn:",
-                              style: TextStyle(
-                                  color: AppColor.colorMain, fontSize: 16),
-                            ),
-                            const SizedBox(height: 12),
-                            (majors.isEmpty)
-                                ? Center(
-                                    child: ViewEmptyData(
-                                      text:
-                                          "Sinh viên chưa tham gia hoạt động nào của Liên Chi Đoàn",
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: majors.length,
-                                    itemBuilder: (context, index) {
-                                      return Text(
-                                        "${index + 1}/ ${majors[index].name}",
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                            const SizedBox(height: 12),
-                            const Text(
-                              "Danh sách hoạt động tự khai của cá nhân:",
-                              style: TextStyle(
-                                color: AppColor.colorMain,
-                                fontSize: 16,
+                        child: SizedBox(
+                          height: size.height * 0.9,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Danh sách hoạt động tự khai của cá nhân",
+                                style: TextStyle(
+                                  color: AppColor.colorMain,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            (individuals.isEmpty)
-                                ? Center(
-                                    child: ViewEmptyData(
-                                      text:
-                                          "Sinh viên không có hoạt động cá nhân nào",
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: individuals.length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        width: double.infinity,
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 8),
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                              const SizedBox(height: 12),
+                              (individuals.isEmpty)
+                                  ? Expanded(
+                                      child: Center(
+                                        child: ViewEmptyData(
+                                          text:
+                                              "Sinh viên không có hoạt động cá nhân nào",
                                         ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              "Tên sự kiện: ${individuals[index].title}",
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: individuals.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: double.infinity,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                "Tên sự kiện: ${individuals[index].title}",
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 24),
-                                            GridView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 4,
-                                                crossAxisSpacing: 12,
-                                                mainAxisSpacing: 8,
-                                              ),
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  individuals[index].img.length,
-                                              itemBuilder: (context, i) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    UIUtil.showDialogImage(
-                                                      context: context,
-                                                      url: individuals[index]
-                                                          .img[i],
-                                                    );
-                                                  },
-                                                  child: SizedBox(
-                                                    width: size.width * 0.18,
-                                                    height: size.width * 0.18,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: Image.network(
-                                                        individuals[index]
+                                              const SizedBox(height: 24),
+                                              GridView.builder(
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 4,
+                                                  crossAxisSpacing: 12,
+                                                  mainAxisSpacing: 8,
+                                                ),
+                                                shrinkWrap: true,
+                                                itemCount: individuals[index]
+                                                    .img
+                                                    .length,
+                                                itemBuilder: (context, i) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      UIUtil.showDialogImage(
+                                                        context: context,
+                                                        url: individuals[index]
                                                             .img[i],
-                                                        fit: BoxFit.cover,
+                                                      );
+                                                    },
+                                                    child: SizedBox(
+                                                      width: size.width * 0.18,
+                                                      height: size.width * 0.18,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        child: Image.network(
+                                                          individuals[index]
+                                                              .img[i],
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                          ],
+                                                  );
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                            ],
+                          ),
                         ),
                       );
                     }

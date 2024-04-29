@@ -17,9 +17,7 @@ void main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true),
       home: (isLoggedIn) ? const MembersPage() : const LoginPage(),
     ),
   );
