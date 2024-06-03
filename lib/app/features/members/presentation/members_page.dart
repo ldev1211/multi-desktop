@@ -231,7 +231,7 @@ class _MembersPageState extends State<MembersPage> {
                           },
                         ),
                         const SizedBox(width: 24),
-                        if (PrefUtil.instance.getInt("role") == 7)
+                        if ([3, 4].contains(PrefUtil.instance.getInt("role")))
                           AppButton.buttonPrimary(
                             height: 45,
                             width: 300,
