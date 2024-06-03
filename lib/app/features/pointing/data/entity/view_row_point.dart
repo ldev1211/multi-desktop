@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 
@@ -136,6 +137,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                           signed: true,
                           decimal: true,
                         ),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   textAlign: TextAlign.center,
                   onChanged: (string) {
                     try {
