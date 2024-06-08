@@ -11,10 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-String nhhk = "20222";
-String semester = "I" * int.parse(nhhk.substring(4));
-String year =
-    "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
 double headerHeight = 60;
 double widthStt = 20;
 double widthContent = 250;
@@ -25,6 +21,8 @@ double widthDetailPoint = widthPointExt / 3;
 Future<void> initPDF({
   required List<PointExt> data,
   required int totalSelf,
+  required String semester,
+  required String year,
   required StudentEntity student,
   required int totalFinal,
   required Function(String) onGenerating,
@@ -433,6 +431,8 @@ Sheet sheetObject = excel['Sheet1'];
 
 Future<void> genMeetingForm({
   required String nhhk,
+  required String semester,
+  required String year,
   required String classCode,
   required String time,
   required String secretary,
@@ -997,7 +997,11 @@ Future<void> genMeetingForm({
 
 Future<void> genFile(
     List<StudentPoint> data, List<TextEditingController> controllers,
-    {required Function(String) onGenerating, required Function onDone}) async {
+    {required Function(String) onGenerating,
+    required Function onDone,
+    required String nhhk,
+    required String semester,
+    required String year}) async {
   CellStyle cellHeaderStyleBold = CellStyle(
     backgroundColorHex: '#FFFFFFFF',
     bold: true,
@@ -1060,9 +1064,9 @@ Future<void> genFile(
 
   merge(('F9'), ('I9'), cellHeaderStyleRegular, 'Khoa: Công nghệ thông tin 2');
 
-  merge(('A10'), ('B10'), cellHeaderStyleRegular,
-      'Học kỳ: ${nhhk.substring(0, 1)}');
+  merge(('A10'), ('B10'), cellHeaderStyleRegular, 'Học kỳ: $semester');
 
+  print("Nam hoc excel: $year");
   merge(('F10'), ('H10'), cellHeaderStyleRegular, 'Năm học: $year');
 
   merge("A7", "L7", cellHeaderStyleBoldCt.copyWith(fontSizeVal: 15),
@@ -1120,6 +1124,8 @@ Future<void> genFile(
 
     await initPDF(
       student: studentPoint.student,
+      semester: semester,
+      year: year,
       data: studentPoint.points,
       totalSelf: totalFullSelf,
       totalFinal: totalFullFinal,
@@ -1327,6 +1333,8 @@ Future<void> genFile(
 
   genMeetingForm(
       nhhk: nhhk,
+      year: year,
+      semester: semester,
       classCode: data.first.student.classCode!,
       time: controllers[4].text,
       endTime: controllers[5].text,

@@ -97,8 +97,9 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                 color: Colors.white,
               ),
               child: Visibility(
-                visible: widget.point.type == TypeRow.ROW &&
-                    widget.point.pointRule != null,
+                visible:
+                    [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
+                        widget.point.pointRule != null,
                 child: Text(
                   (widget.point.pointSelf != null)
                       ? "${widget.point.pointSelf} điểm"
@@ -125,50 +126,65 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                 color: Colors.white,
               ),
               child: Visibility(
-                visible: widget.point.type == TypeRow.ROW &&
-                    widget.point.pointRule != null,
-                child: TextField(
-                  textAlignVertical: TextAlignVertical.center,
-                  cursorColor: AppColor.colorMain,
-                  controller: controller,
-                  keyboardType: (Platform.isAndroid)
-                      ? TextInputType.number
-                      : const TextInputType.numberWithOptions(
-                          signed: true,
-                          decimal: true,
+                visible:
+                    [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
+                        widget.point.pointRule != null,
+                child: (TypeRow.TOTAL == widget.point.type)
+                    ? Text(
+                        (widget.point.pointFinal != null)
+                            ? "${widget.point.pointFinal} điểm"
+                            : "0 điểm",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
                         ),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  textAlign: TextAlign.center,
-                  onChanged: (string) {
-                    try {
-                      int pointVal = int.parse(controller.text);
-                      if (!(controller.text == '-' ||
-                          pointVal <= widget.point.pointRule!)) {
-                        controller.text = controller.text
-                            .substring(0, controller.text.length - 1);
-                        return;
-                      }
-                      widget.point.pointSelf = pointVal;
-                    } catch (e) {
-                      widget.point.pointSelf = null;
-                    }
-                    widget.onChangePoint(widget.point.pointSelf);
-                  },
-                  style: const TextStyle(fontSize: 13),
-                  decoration: const InputDecoration(
-                    hintText: "0 điểm",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.colorMain),
-                    ),
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
+                      )
+                    : TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        cursorColor: AppColor.colorMain,
+                        controller: controller,
+                        keyboardType: (Platform.isAndroid)
+                            ? TextInputType.number
+                            : const TextInputType.numberWithOptions(
+                                signed: true,
+                                decimal: true,
+                              ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        textAlign: TextAlign.center,
+                        onChanged: (string) {
+                          try {
+                            int pointVal = int.parse(controller.text);
+                            if (!(controller.text == '-' ||
+                                pointVal <= widget.point.pointRule!)) {
+                              controller.text = controller.text
+                                  .substring(0, controller.text.length - 1);
+                              return;
+                            }
+                            widget.point.pointFinal = pointVal;
+                          } catch (e) {
+                            widget.point.pointFinal = null;
+                          }
+                          widget.onChangePoint(widget.point.pointFinal);
+                        },
+                        style: const TextStyle(fontSize: 13),
+                        decoration: const InputDecoration(
+                          hintText: "0 điểm",
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColor.colorMain),
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
               ),
             ),
             const VerticalDivider(

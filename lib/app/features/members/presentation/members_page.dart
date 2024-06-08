@@ -47,16 +47,25 @@ class _MembersPageState extends State<MembersPage> {
       {required Function(String) onGenerating,
       required Function onDone}) async {
     List<StudentPoint> studentPoints = [];
+
     for (var e in members) {
       onGenerating("Đang truy vấn điểm từ hệ thống...\n${e.fullName}");
       final points = await fetchPoint(stuCode: e.stuCode);
       studentPoints.add(StudentPoint(student: e, points: points));
     }
+    final response = await service.getConfig();
+    String nhhk = response.data['nhhk'];
+    String semester = "I" * int.parse(nhhk.substring(4));
+    String year =
+        "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
     final output = await getApplicationDocumentsDirectory();
     Directory("${output.path}/Multimedia-DRL").createSync();
     await genFile(
       studentPoints,
       controllers,
+      nhhk: nhhk,
+      semester: semester,
+      year: year,
       onGenerating: (path) {
         onGenerating("Đang xuất file $path");
       },

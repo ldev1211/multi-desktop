@@ -28,6 +28,9 @@ abstract class ApiService {
   @GET('/stu_inf/get_members_class')
   Future<BaseResponse> getMembers();
 
+  @GET('/get_config')
+  Future<BaseResponse> getConfig();
+
   @GET('/point_ext/get_point/{stuCode}')
   Future<ResponsePointExt> getPointExt(@Path("stuCode") String stuCode);
 
