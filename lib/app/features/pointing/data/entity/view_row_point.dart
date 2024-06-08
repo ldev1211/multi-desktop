@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/util/app_colors.dart';
 
 class ViewRowPoint extends StatefulWidget {
   PointExt point;
 
-  Function(int?) onChangePoint;
+  Function(String?) onChangePoint;
 
   ViewRowPoint({super.key, required this.point, required this.onChangePoint});
   @override
@@ -151,24 +150,12 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                                 signed: true,
                                 decimal: true,
                               ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                        // inputFormatters: [
+                        //   FilteringTextInputFormatter.digitsOnly
+                        // ],
                         textAlign: TextAlign.center,
                         onChanged: (string) {
-                          try {
-                            int pointVal = int.parse(controller.text);
-                            if (!(controller.text == '-' ||
-                                pointVal <= widget.point.pointRule!)) {
-                              controller.text = controller.text
-                                  .substring(0, controller.text.length - 1);
-                              return;
-                            }
-                            widget.point.pointFinal = pointVal;
-                          } catch (e) {
-                            widget.point.pointFinal = null;
-                          }
-                          widget.onChangePoint(widget.point.pointFinal);
+                          widget.onChangePoint(string.isEmpty ? '0' : string);
                         },
                         style: const TextStyle(fontSize: 13),
                         decoration: const InputDecoration(

@@ -54,7 +54,7 @@ class _FormExtPointState extends State<FormExtPoint> {
                 onChangePoint: (point) {
                   Map<String, dynamic> body = {
                     "idFormPoint": pointExt.id,
-                    "point": pointExt.pointSelf,
+                    "point": point,
                     'mssv': widget.student.stuCode
                   };
                   service.postPoint(body);
