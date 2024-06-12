@@ -15,8 +15,7 @@ abstract class ApiService {
         connectTimeout: 10000,
         contentType: 'application/json',
         headers: {
-          'authorization':
-              'Bearer ${PrefUtil.instance.getString("accessToken")}',
+          'authorization': 'Bearer ${PrefUtil.instance.getString("accessToken")}',
           'Content-Type': 'application/json'
         });
     return _ApiService(dio, baseUrl: baseUrl);
@@ -27,6 +26,12 @@ abstract class ApiService {
 
   @GET('/stu_inf/get_members_class')
   Future<BaseResponse> getMembers();
+
+  @GET('/point_ext/get_status_point_ext')
+  Future<BaseResponse> getStatusPoint();
+
+  @POST('/point_ext/toggle_status')
+  Future<BaseResponse> toggleStatus(@Body() Map<String, dynamic> body);
 
   @GET('/get_config')
   Future<BaseResponse> getConfig();

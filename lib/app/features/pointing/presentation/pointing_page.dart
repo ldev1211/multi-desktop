@@ -61,8 +61,7 @@ class _PointingPageState extends State<PointingPage> {
                   const SizedBox(height: 12),
                   BlocBuilder<PointingCubit, PointingState>(
                     buildWhen: (prev, curr) {
-                      return curr is FetchedPointState ||
-                          curr is FetchingPointState;
+                      return curr is FetchedPointState || curr is FetchingPointState;
                     },
                     builder: (context, state) {
                       if (state is FetchedPointState) {
@@ -91,113 +90,95 @@ class _PointingPageState extends State<PointingPage> {
                 ),
                 child: BlocBuilder<PointingCubit, PointingState>(
                   buildWhen: (prev, curr) {
-                    return curr is FetchingCertState ||
-                        curr is FetchedCertState;
+                    return curr is FetchingCertState || curr is FetchedCertState;
                   },
                   builder: (context, state) {
                     if (state is FetchedCertState) {
                       List<Individual> individuals = state.cert.individual;
-                      return SingleChildScrollView(
-                        child: SizedBox(
-                          height: size.height * 0.9,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Danh sách hoạt động tự khai của cá nhân",
-                                style: TextStyle(
-                                  color: AppColor.colorMain,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              (individuals.isEmpty)
-                                  ? Expanded(
-                                      child: Center(
-                                        child: ViewEmptyData(
-                                          text:
-                                              "Sinh viên không có hoạt động cá nhân nào",
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Danh sách hoạt động tự khai của cá nhân",
+                            style: TextStyle(
+                              color: AppColor.colorMain,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          (individuals.isEmpty)
+                              ? Expanded(
+                                  child: Center(
+                                    child: ViewEmptyData(
+                                      text: "Sinh viên không có hoạt động cá nhân nào",
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: individuals.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        width: double.infinity,
+                                        margin: const EdgeInsets.symmetric(vertical: 8),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(12),
                                         ),
-                                      ),
-                                    )
-                                  : ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: individuals.length,
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          width: double.infinity,
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8),
-                                          padding: const EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                "Tên sự kiện: ${individuals[index].title}",
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              "Tên sự kiện: ${individuals[index].title}",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
                                               ),
-                                              const SizedBox(height: 24),
-                                              GridView.builder(
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 4,
-                                                  crossAxisSpacing: 12,
-                                                  mainAxisSpacing: 8,
-                                                ),
-                                                shrinkWrap: true,
-                                                itemCount: individuals[index]
-                                                    .img
-                                                    .length,
-                                                itemBuilder: (context, i) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      UIUtil.showDialogImage(
-                                                        context: context,
-                                                        url: individuals[index]
-                                                            .img[i],
-                                                      );
-                                                    },
-                                                    child: SizedBox(
-                                                      width: size.width * 0.18,
-                                                      height: size.width * 0.18,
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        child: Image.network(
-                                                          individuals[index]
-                                                              .img[i],
-                                                          fit: BoxFit.cover,
-                                                        ),
+                                            ),
+                                            const SizedBox(height: 24),
+                                            GridView.builder(
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 4,
+                                                crossAxisSpacing: 12,
+                                                mainAxisSpacing: 8,
+                                              ),
+                                              shrinkWrap: true,
+                                              itemCount: individuals[index].img.length,
+                                              itemBuilder: (context, i) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    UIUtil.showDialogImage(
+                                                      context: context,
+                                                      url: individuals[index].img[i],
+                                                    );
+                                                  },
+                                                  child: SizedBox(
+                                                    width: size.width * 0.18,
+                                                    height: size.width * 0.18,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      child: Image.network(
+                                                        individuals[index].img[i],
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                                  );
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                            ],
-                          ),
-                        ),
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                        ],
                       );
                     }
                     return const Center(child: AppProgress());

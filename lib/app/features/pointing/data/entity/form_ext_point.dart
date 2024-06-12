@@ -37,7 +37,7 @@ class _FormExtPointState extends State<FormExtPoint> {
         buildHeader(header: "Nội dung đánh giá"),
         Container(
           width: size.width * 0.6,
-          height: size.height * 0.7,
+          height: size.height * 0.8,
           decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppColor.colorMain),
@@ -46,8 +46,18 @@ class _FormExtPointState extends State<FormExtPoint> {
           child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
-            itemCount: points.length,
+            itemCount: points.length + 1,
             itemBuilder: (context, i) {
+              if (i == points.length) {
+                int totalSelf = 0;
+                int totalFinal = 0;
+                for (var e in points) {
+                  if (e.type == TypeRow.TOTAL) continue;
+                  totalFinal += e.pointFinal ?? 0;
+                  totalSelf += e.pointSelf ?? 0;
+                }
+                return buildTotal(totalSelf, totalFinal);
+              }
               PointExt pointExt = points[i];
               return ViewRowPoint(
                 point: pointExt,
@@ -57,6 +67,7 @@ class _FormExtPointState extends State<FormExtPoint> {
                     "point": point,
                     'mssv': widget.student.stuCode
                   };
+                  setState(() {});
                   service.postPoint(body);
                 },
               );
@@ -64,6 +75,115 @@ class _FormExtPointState extends State<FormExtPoint> {
           ),
         )
       ],
+    );
+  }
+
+  Widget buildTotal(int totalSelf, totalFinal) {
+    return IntrinsicHeight(
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: AppColor.colorMain),
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.3 - 2,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: const Text(
+                "Tổng điểm",
+                style: TextStyle(
+                  color: AppColor.colorMain,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: const Text(
+                "",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColor.colorMain,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Text(
+                "$totalSelf điểm",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColor.colorMain,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.1 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Text(
+                "$totalFinal điểm",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColor.colorMain,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
+            )
+          ],
+        ),
+      ),
     );
   }
 

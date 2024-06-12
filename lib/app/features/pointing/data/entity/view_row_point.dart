@@ -19,9 +19,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    controller.text = (widget.point.pointFinal != null)
-        ? widget.point.pointFinal.toString()
-        : "";
+    controller.text = (widget.point.pointFinal != null) ? widget.point.pointFinal.toString() : "";
     return IntrinsicHeight(
       child: Container(
         decoration: const BoxDecoration(
@@ -48,9 +46,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
               child: Text(
                 "${widget.point.stt ?? ""} ${widget.point.content}",
                 style: TextStyle(
-                  color: widget.point.type == TypeRow.TOTAL
-                      ? AppColor.colorMain
-                      : Colors.black,
+                  color: widget.point.type == TypeRow.TOTAL ? AppColor.colorMain : Colors.black,
                   fontWeight: (widget.point.stt != null ||
                           widget.point.type == TypeRow.TOTAL ||
                           widget.point.type == TypeRow.HEADER)
@@ -72,9 +68,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                 color: Colors.white,
               ),
               child: Text(
-                (widget.point.pointRule != null)
-                    ? "${widget.point.pointRule} điểm"
-                    : "",
+                (widget.point.pointRule != null) ? "${widget.point.pointRule} điểm" : "",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: AppColor.colorMain,
@@ -96,13 +90,10 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                 color: Colors.white,
               ),
               child: Visibility(
-                visible:
-                    [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
-                        widget.point.pointRule != null,
+                visible: [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
+                    widget.point.pointRule != null,
                 child: Text(
-                  (widget.point.pointSelf != null)
-                      ? "${widget.point.pointSelf} điểm"
-                      : "0 điểm",
+                  (widget.point.pointSelf != null) ? "${widget.point.pointSelf} điểm" : "0 điểm",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.grey,
@@ -125,9 +116,8 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                 color: Colors.white,
               ),
               child: Visibility(
-                visible:
-                    [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
-                        widget.point.pointRule != null,
+                visible: [TypeRow.ROW, TypeRow.TOTAL].contains(widget.point.type) &&
+                    widget.point.pointRule != null,
                 child: (TypeRow.TOTAL == widget.point.type)
                     ? Text(
                         (widget.point.pointFinal != null)
@@ -150,12 +140,14 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                                 signed: true,
                                 decimal: true,
                               ),
-                        // inputFormatters: [
-                        //   FilteringTextInputFormatter.digitsOnly
-                        // ],
                         textAlign: TextAlign.center,
                         onChanged: (string) {
                           widget.onChangePoint(string.isEmpty ? '0' : string);
+                          try {
+                            widget.point.pointFinal = int.parse(string);
+                          } catch (e) {
+                            widget.point.pointFinal = null;
+                          }
                         },
                         style: const TextStyle(fontSize: 13),
                         decoration: const InputDecoration(
