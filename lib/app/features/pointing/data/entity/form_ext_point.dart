@@ -37,7 +37,7 @@ class _FormExtPointState extends State<FormExtPoint> {
         buildHeader(header: "Nội dung đánh giá"),
         Container(
           width: size.width * 0.6,
-          height: size.height * 0.8,
+          height: size.height * 0.7,
           decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppColor.colorMain),
