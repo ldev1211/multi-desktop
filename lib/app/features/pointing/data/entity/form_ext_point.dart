@@ -28,9 +28,25 @@ class _FormExtPointState extends State<FormExtPoint> {
     points = widget.points;
   }
 
+  int subTotalFinal = 0;
+  int totalSelf = 0;
+  int totalFinal = 0;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    subTotalFinal = 0;
+    totalSelf = 0;
+    totalFinal = 0;
+    for (var e in points) {
+      if (e.type == TypeRow.TOTAL) {
+        e.pointFinal = subTotalFinal;
+        subTotalFinal = 0;
+        continue;
+      }
+      totalFinal += e.pointFinal ?? 0;
+      subTotalFinal += e.pointFinal ?? 0;
+      totalSelf += e.pointSelf ?? 0;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,16 +65,10 @@ class _FormExtPointState extends State<FormExtPoint> {
             itemCount: points.length + 1,
             itemBuilder: (context, i) {
               if (i == points.length) {
-                int totalSelf = 0;
-                int totalFinal = 0;
-                for (var e in points) {
-                  if (e.type == TypeRow.TOTAL) continue;
-                  totalFinal += e.pointFinal ?? 0;
-                  totalSelf += e.pointSelf ?? 0;
-                }
                 return buildTotal(totalSelf, totalFinal);
               }
               PointExt pointExt = points[i];
+
               return ViewRowPoint(
                 point: pointExt,
                 onChangePoint: (point) {

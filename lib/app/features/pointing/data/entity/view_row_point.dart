@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:multi_desktop/app/features/pointing/data/model/point_ext.dart';
 import 'package:multi_desktop/util/app_colors.dart';
@@ -134,14 +132,9 @@ class _ViewRowPointState extends State<ViewRowPoint> {
                         textAlignVertical: TextAlignVertical.center,
                         cursorColor: AppColor.colorMain,
                         controller: controller,
-                        keyboardType: (Platform.isAndroid)
-                            ? TextInputType.number
-                            : const TextInputType.numberWithOptions(
-                                signed: true,
-                                decimal: true,
-                              ),
                         textAlign: TextAlign.center,
                         onChanged: (string) {
+                          if(string == '-') return;
                           widget.onChangePoint(string.isEmpty ? '0' : string);
                           try {
                             widget.point.pointFinal = int.parse(string);
