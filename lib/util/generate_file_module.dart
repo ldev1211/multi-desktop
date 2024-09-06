@@ -53,6 +53,20 @@ Future<void> initPDF({
       build: (context) {
         return [
           pw.Row(
+            children: [
+              pw.SizedBox(width: 8),
+              pw.Text(
+                "Mẫu 01-PL2- Phiếu đánh giá KQRL",
+                textAlign: pw.TextAlign.center,
+                style: defaultHeaderTextStyleBold.copyWith(
+                  fontSize: 11,
+                  decoration: pw.TextDecoration.underline,
+                ),
+              ),
+            ],
+          ),
+          pw.SizedBox(height: 12),
+          pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.Column(
@@ -60,7 +74,7 @@ Future<void> initPDF({
                   children: [
                     pw.Text("HỌC VIỆN CN BƯU CHÍNH VIỄN THÔNG",
                         style: defaultHeaderTextStyleBold),
-                    pw.Text("HỌC VIỆN CN BCVN CƠ SỞ TẠI TP. HCM",
+                    pw.Text("HỌC VIỆN CN BCVT CƠ SỞ TẠI TP. HCM",
                         style: defaultHeaderTextStyleBold),
                     pw.Container(color: PdfColors.black, height: 1, width: 150)
                   ]),
@@ -335,7 +349,12 @@ Future<void> initPDF({
                       width: widthDetailPoint,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                        "",
+                        (i < data.length)
+                            ? (data[i].type == TypeRow.HEADER ||
+                                    data[i].pointRule == null)
+                                ? ""
+                                : "${data[i].pointFinal ?? '0'}"
+                            : totalFinal.toString(),
                         style: defaultRowTextStyleRegular,
                       ),
                     ),
@@ -466,6 +485,15 @@ Future<void> genMeetingForm({
       orientation: pw.PageOrientation.portrait,
       build: (context) {
         return [
+          pw.Text(
+            "MẪU 3: Biên bản họp lớp",
+            textAlign: pw.TextAlign.center,
+            style: defaultHeaderTextStyleBold.copyWith(
+              fontSize: 11,
+              decoration: pw.TextDecoration.underline,
+            ),
+          ),
+          pw.SizedBox(height: 12),
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
