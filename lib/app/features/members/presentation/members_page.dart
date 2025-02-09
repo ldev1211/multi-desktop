@@ -14,6 +14,7 @@ import 'package:multi_desktop/util/app_colors.dart';
 import 'package:multi_desktop/util/generate_file_module.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 import 'package:multi_desktop/util/ui_util.dart';
+import 'package:open_dir/open_dir.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,7 +52,8 @@ class _MembersPageState extends State<MembersPage> {
   }
 
   Future<void> startGenFile(
-      {required Function(String) onGenerating, required Function onDone}) async {
+      {required Function(String) onGenerating,
+      required Function onDone}) async {
     List<StudentPoint> studentPoints = [];
 
     for (var e in members) {
@@ -62,7 +64,8 @@ class _MembersPageState extends State<MembersPage> {
     final response = await service.getConfig();
     String nhhk = response.data['nhhk'];
     String semester = "I" * int.parse(nhhk.substring(4));
-    String year = "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
+    String year =
+        "${int.parse(nhhk.substring(0, 4))}-${int.parse(nhhk.substring(0, 4)) + 1}";
     final output = await getApplicationDocumentsDirectory();
     Directory("${output.path}/Multimedia-DRL").createSync();
     await genFile(
@@ -117,7 +120,8 @@ class _MembersPageState extends State<MembersPage> {
                   onPressed: () async {
                     await PrefUtil.instance.clear();
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                         (Route<dynamic> route) => false);
                   },
                   icon: const Icon(
@@ -150,8 +154,15 @@ class _MembersPageState extends State<MembersPage> {
                           width: 200,
                           text: "Mở thư mục điểm rèn luyện",
                           onTap: () async {
-                            final output = await getApplicationDocumentsDirectory();
-                            launch('${output.path}/Multimedia-DRL');
+                            final output =
+                                await getApplicationDocumentsDirectory();
+                            if (Platform.isWindows) {
+                              launch('${output.path}/Multimedia-DRL');
+                            } else {
+                              final openDirPlugin = OpenDir();
+                              await openDirPlugin.openNativeDir(
+                                  path: output.path);
+                            }
                           },
                         ),
                         const SizedBox(width: 24),
@@ -199,28 +210,34 @@ class _MembersPageState extends State<MembersPage> {
                                             width: size.width * 0.3,
                                             height: size.height * 0.3,
                                             decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(Radius.circular(200)),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(200)),
                                             ),
                                             alignment: Alignment.center,
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 Center(
                                                   child: isDone
                                                       ? const Icon(
                                                           Icons.check,
-                                                          color: AppColor.colorMain,
+                                                          color: AppColor
+                                                              .colorMain,
                                                           size: 48,
                                                         )
                                                       : const CircularProgressIndicator(
-                                                          color: AppColor.colorMain,
+                                                          color: AppColor
+                                                              .colorMain,
                                                           strokeWidth: 5,
                                                         ),
                                                 ),
                                                 const SizedBox(height: 8),
                                                 Text(
-                                                  messageCurr ?? "Đang chuẩn bị...",
+                                                  messageCurr ??
+                                                      "Đang chuẩn bị...",
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     color: Colors.black,
@@ -250,7 +267,8 @@ class _MembersPageState extends State<MembersPage> {
                                 context: context,
                                 onOk: () async {
                                   UIUtil.showDialogLoading(context);
-                                  BaseResponse response = await service.initPointing();
+                                  BaseResponse response =
+                                      await service.initPointing();
                                   Navigator.pop(context);
                                 },
                                 message:
@@ -351,10 +369,12 @@ class _MembersPageState extends State<MembersPage> {
                         itemBuilder: (context, i) {
                           StudentEntity member = members[i];
                           return Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
                             decoration: const BoxDecoration(
                                 color: Colors.white,
-                                border: Border(bottom: BorderSide(color: Colors.grey))),
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.grey))),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
