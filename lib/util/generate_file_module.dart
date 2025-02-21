@@ -708,7 +708,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[0].toDouble() / studentPoint.length * 100}',
+                    "${((totals[0].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}",
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -752,7 +752,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[1].toDouble() / studentPoint.length * 100}',
+                    '${((totals[1].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}',
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -796,7 +796,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[2].toDouble() / studentPoint.length * 100}',
+                    '${((totals[2].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}',
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -840,7 +840,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[3].toDouble() / studentPoint.length * 100}',
+                    '${((totals[3].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}',
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -884,7 +884,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[4].toDouble() / studentPoint.length * 100}',
+                    '${((totals[4].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}',
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -928,7 +928,7 @@ Future<void> genMeetingForm({
                   border: pw.Border.all(color: PdfColors.black),
                 ),
                 child: pw.Text(
-                    '${totals[5].toDouble() / studentPoint.length * 100}',
+                    '${((totals[5].toDouble() / studentPoint.length * 100) * 100).truncateToDouble() / 100}',
                     style: defaultHeaderTextStyleBold),
               ),
               pw.Container(
@@ -1254,8 +1254,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[0].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[0].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1267,8 +1268,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[1].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[1].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1280,8 +1282,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[2].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[2].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1293,8 +1296,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[3].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[3].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1306,8 +1310,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[4].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[4].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
@@ -1319,8 +1324,9 @@ Future<void> genFile(
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
   getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('J$indexRowCont').value =
-      DoubleCellValue(totalRank[5].toDouble() / data.length * 100);
+  getCellData('J$indexRowCont').value = DoubleCellValue(
+      ((totalRank[5].toDouble() / data.length * 100) * 100).truncateToDouble() /
+          100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('K$indexRowCont').value = const TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
