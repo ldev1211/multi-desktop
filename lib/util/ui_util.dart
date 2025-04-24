@@ -10,7 +10,8 @@ class UIUtil {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
           content: Container(
             height: 50,
             decoration: const BoxDecoration(
@@ -389,6 +390,67 @@ class UIUtil {
                       ),
                     ),
                   ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void showWarningDialog({
+    required BuildContext context,
+    required String message,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          content: Container(
+            height: 250,
+            width: 440,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              border: Border.all(color: AppColor.colorRed, width: 2),
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/icon/cross_circle_icon.png",
+                  width: 48,
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColor.colorRed,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: AppColor.colorMain,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),

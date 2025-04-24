@@ -47,4 +47,7 @@ abstract class ApiService {
 
   @POST('/point_ext/init')
   Future<BaseResponse> initPointing();
+
+  @PUT('/stu_inf/update_new_class')
+  Future<BaseResponse> updateNewClass();
 }
