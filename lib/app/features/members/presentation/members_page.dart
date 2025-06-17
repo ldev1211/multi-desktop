@@ -81,6 +81,12 @@ class _MembersPageState extends State<MembersPage> {
     );
   }
 
+  Future<bool> syncNewClassName() async {
+    final response = await service.updateNewClass();
+    if (!response.error) await getMembers();
+    return response.error;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -278,34 +284,58 @@ class _MembersPageState extends State<MembersPage> {
                           ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 24),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Mở chấm điểm:",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Mở chấm điểm:",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            isAllowPoint != null
+                                ? Switch(
+                                    value: isAllowPoint!,
+                                    activeColor: AppColor.colorMain,
+                                    inactiveTrackColor: Colors.grey.shade300,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isAllowPoint = value;
+                                        service.toggleStatus({
+                                          'status': isAllowPoint! ? 1 : 0,
+                                        });
+                                      });
+                                    },
+                                  )
+                                : const AppProgress(),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        isAllowPoint != null
-                            ? Switch(
-                                value: isAllowPoint!,
-                                activeColor: AppColor.colorMain,
-                                inactiveTrackColor: Colors.grey.shade300,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isAllowPoint = value;
-                                    service.toggleStatus({
-                                      'status': isAllowPoint! ? 1 : 0,
-                                    });
-                                  });
-                                },
-                              )
-                            : const AppProgress(),
+                        AppButton.buttonSecondary(
+                          height: 45,
+                          width: 200,
+                          text: "Đồng bộ mã lớp",
+                          onTap: () async {
+                            UIUtil.showDialogLoading(context);
+                            final isError = await syncNewClassName();
+                            Navigator.pop(context);
+                            if (!isError) {
+                              UIUtil.showToast("Đồng bộ thành công");
+                            } else {
+                              UIUtil.showWarningDialog(
+                                context: context,
+                                message:
+                                    "Bạn không có quyền chỉnh sửa.\nVui lòng xem lại!",
+                              );
+                            }
+                          },
+                        )
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -353,6 +383,19 @@ class _MembersPageState extends State<MembersPage> {
                           width: size.width * 0.1,
                           child: Text(
                             "Mã sinh viên",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: fontSize,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        SizedBox(
+                          width: size.width * 0.1,
+                          child: Text(
+                            "Lớp",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: fontSize,
@@ -416,6 +459,19 @@ class _MembersPageState extends State<MembersPage> {
                                   width: size.width * 0.1,
                                   child: Text(
                                     member.stuCode,
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: fontSize,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.1,
+                                  child: Text(
+                                    member.classCode ?? "",
                                     style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: fontSize,
