@@ -22,12 +22,6 @@ class _LoginPage extends State<LoginPage> {
   final _textStuCodeController = TextEditingController();
   final _textPasswordController = TextEditingController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   bool isHidePass = true;
 
   bool isFocusPass = false;
@@ -72,7 +66,7 @@ class _LoginPage extends State<LoginPage> {
                     alignment: Alignment.center,
                     height: 45,
                     padding: const EdgeInsets.symmetric(
-                      vertical: 4,
+                      vertical: 8,
                       horizontal: 8,
                     ),
                     decoration: BoxDecoration(
