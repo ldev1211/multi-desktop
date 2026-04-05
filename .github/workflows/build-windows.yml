@@ -1,0 +1,106 @@
+name: Build Windows Installer & Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0, v2.1.3, etc.
+
+permissions:
+  contents: write  # Required for creating releases
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Enable Windows desktop support
+        run: flutter config --enable-windows-desktop
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Create Inno Setup script
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          $script = @"
+          [Setup]
+          AppId={{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}
+          AppName=Multi Desktop
+          AppVersion=$version
+          AppPublisher=ldev1211
+          DefaultDirName={autopf}\Multi Desktop
+          DefaultGroupName=Multi Desktop
+          DisableProgramGroupPage=yes
+          OutputDir=.\Output
+          OutputBaseFilename=MultiDesktop-Setup-$version
+          SetupIconFile=.\windows\runner\resources\app_icon.ico
+          Compression=lzma
+          SolidCompression=yes
+          WizardStyle=modern
+          ArchitecturesInstallIn64BitMode=x64compatible
+
+          [Languages]
+          Name: "english"; MessagesFile: "compiler:Default.isl"
+
+          [Tasks]
+          Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
+          [Files]
+          Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+          [Icons]
+          Name: "{group}\Multi Desktop"; Filename: "{app}\multi_desktop.exe"
+          Name: "{autodesktop}\Multi Desktop"; Filename: "{app}\multi_desktop.exe"; Tasks: desktopicon
+
+          [Run]
+          Filename: "{app}\multi_desktop.exe"; Description: "{cm:LaunchProgram,Multi Desktop}"; Flags: nowait postinstall skipifsilent
+          "@
+
+          Set-Content -Path "installer.iss" -Value $script -Encoding UTF8
+          Write-Host "Inno Setup script created successfully"
+
+      - name: Build installer with Inno Setup
+        shell: pwsh
+        run: |
+          # Inno Setup is pre-installed on windows-latest runners
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "installer.iss"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: Output\*.exe
+          retention-days: 5
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Multi Desktop ${{ github.ref_name }}"
+          body: |
+            ## 🖥️ Multi Desktop ${{ github.ref_name }}
+            
+            ### Installation
+            1. Download `MultiDesktop-Setup-*.exe` below
+            2. Run the installer
+            3. Follow the setup wizard
+            
+            ### System Requirements
+            - Windows 10 or later (64-bit)
+          draft: false
+          prerelease: false
+          files: Output/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
