@@ -1031,7 +1031,7 @@ Future<void> genFile(
     required String semester,
     required String year}) async {
   CellStyle cellHeaderStyleBold = CellStyle(
-    backgroundColorHex: '#FFFFFFFF',
+    backgroundColorHex: ExcelColor.white,
     bold: true,
     fontSize: 12,
     bottomBorder: Border(borderStyle: BorderStyle.Thin),
@@ -1041,7 +1041,7 @@ Future<void> genFile(
     fontFamily: getFontFamily(FontFamily.Arial),
   );
   CellStyle cellHeaderStyleBoldCt = CellStyle(
-    backgroundColorHex: '#FFFFFFFF',
+    backgroundColorHex: ExcelColor.white,
     fontSize: 12,
     textWrapping: TextWrapping.WrapText,
     bold: true,
@@ -1054,7 +1054,7 @@ Future<void> genFile(
     fontFamily: getFontFamily(FontFamily.Arial),
   );
   CellStyle cellHeaderStyleRegular = CellStyle(
-    backgroundColorHex: '#FFFFFFFF',
+    backgroundColorHex: ExcelColor.white,
     fontSize: 12,
     bottomBorder: Border(borderStyle: BorderStyle.Thin),
     topBorder: Border(borderStyle: BorderStyle.Thin),
@@ -1063,7 +1063,7 @@ Future<void> genFile(
     fontFamily: getFontFamily(FontFamily.Arial),
   );
   CellStyle cellHeaderStyleRegularCt = CellStyle(
-    backgroundColorHex: '#FFFFFFFF',
+    backgroundColorHex: ExcelColor.white,
     bottomBorder: Border(borderStyle: BorderStyle.Thin),
     topBorder: Border(borderStyle: BorderStyle.Thin),
     rightBorder: Border(borderStyle: BorderStyle.Thin),
@@ -1108,17 +1108,17 @@ Future<void> genFile(
 
   merge("E12", "J12", cellHeaderStyleBoldCt, "Điểm đánh giá");
 
-  getCellData("E13").value = const TextCellValue("Nội dung 1");
+  getCellData("E13").value = TextCellValue("Nội dung 1");
   getCellData("E13").cellStyle = cellHeaderStyleBoldCt;
-  getCellData("F13").value = const TextCellValue("Nội dung 2");
+  getCellData("F13").value = TextCellValue("Nội dung 2");
   getCellData("F13").cellStyle = cellHeaderStyleBoldCt;
-  getCellData("G13").value = const TextCellValue("Nội dung 3");
+  getCellData("G13").value = TextCellValue("Nội dung 3");
   getCellData("G13").cellStyle = cellHeaderStyleBoldCt;
-  getCellData("H13").value = const TextCellValue("Nội dung 4");
+  getCellData("H13").value = TextCellValue("Nội dung 4");
   getCellData("H13").cellStyle = cellHeaderStyleBoldCt;
-  getCellData("I13").value = const TextCellValue("Nội dung 5");
+  getCellData("I13").value = TextCellValue("Nội dung 5");
   getCellData("I13").cellStyle = cellHeaderStyleBoldCt;
-  getCellData("J13").value = const TextCellValue("Tổng điểm");
+  getCellData("J13").value = TextCellValue("Tổng điểm");
   getCellData("J13").cellStyle = cellHeaderStyleBoldCt;
   merge("K12", "K13", cellHeaderStyleBoldCt, "XẾP LOẠI RÈN LUYỆN");
   merge("L12", "L13", cellHeaderStyleBoldCt, "GHI CHÚ");
@@ -1226,23 +1226,23 @@ Future<void> genFile(
     getCellData("K$indexGen").value = TextCellValue(rank);
     getCellData("K$indexGen").cellStyle = cellHeaderStyleRegularCt;
 
-    getCellData("L$indexGen").value = const TextCellValue("");
+    getCellData("L$indexGen").value = TextCellValue("");
     getCellData("L$indexGen").cellStyle = cellHeaderStyleRegularCt;
   }
 
   int indexRowCont = 13 + data.length + 2;
 
-  getCellData("B$indexRowCont").value = const TextCellValue("Danh sách có");
+  getCellData("B$indexRowCont").value = TextCellValue("Danh sách có");
   getCellData("B$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
   getCellData("C$indexRowCont").value = TextCellValue("${data.length}");
   getCellData("C$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
-  getCellData("D$indexRowCont").value = const TextCellValue("Sinh viên");
+  getCellData("D$indexRowCont").value = TextCellValue("Sinh viên");
   getCellData("D$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
   indexRowCont++;
-  getCellData("A$indexRowCont").value = const TextCellValue(
+  getCellData("A$indexRowCont").value = TextCellValue(
       "Lưu ý: Kết quả điểm rèn luyện được phân thành các loại: Xuất sắc, Tốt, Khá, Trung bình, Yếu, Kém");
   getCellData("A$indexRowCont").cellStyle = cellHeaderStyleRegularCt;
 
@@ -1252,13 +1252,13 @@ Future<void> genFile(
       "_ Loại Xuất sắc: Từ 90- đến 100 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[0].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[0].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
@@ -1266,13 +1266,13 @@ Future<void> genFile(
       "_ Loại Tốt: Từ 80 đến dưới 90 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[1].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[1].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
@@ -1280,13 +1280,13 @@ Future<void> genFile(
       "_ Loại Khá: Từ 65 đến dưới 80 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[2].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[2].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
@@ -1294,13 +1294,13 @@ Future<void> genFile(
       "_ Loại Trung bình: Từ 50 đến dưới 65 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[3].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[3].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
@@ -1308,13 +1308,13 @@ Future<void> genFile(
       "_ Loại Yếu: Từ 35 đến dưới 50 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[4].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[4].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
   indexRowCont++;
 
@@ -1322,13 +1322,13 @@ Future<void> genFile(
       "_ Loại kém: Dưới 35 điểm");
   getCellData('H$indexRowCont').value = TextCellValue(totalRank[5].toString());
   getCellData('H$indexRowCont').cellStyle = cellHeaderStyleRegularCt;
-  getCellData('I$indexRowCont').value = const TextCellValue("Sinh viên");
+  getCellData('I$indexRowCont').value = TextCellValue("Sinh viên");
   getCellData('I$indexRowCont').cellStyle = cellHeaderStyleRegular;
   getCellData('J$indexRowCont').value = DoubleCellValue(
       ((totalRank[5].toDouble() / data.length * 100) * 100).truncateToDouble() /
           100);
   getCellData('J$indexRowCont').cellStyle = cellHeaderStyleRegular;
-  getCellData('K$indexRowCont').value = const TextCellValue("%");
+  getCellData('K$indexRowCont').value = TextCellValue("%");
   getCellData('K$indexRowCont').cellStyle = cellHeaderStyleRegular;
 
   indexRowCont += 2;

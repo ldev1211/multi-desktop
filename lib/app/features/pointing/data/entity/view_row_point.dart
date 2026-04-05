@@ -6,8 +6,9 @@ class ViewRowPoint extends StatefulWidget {
   PointExt point;
 
   Function(String?) onChangePoint;
+  VoidCallback? onDelete;
 
-  ViewRowPoint({super.key, required this.point, required this.onChangePoint});
+  ViewRowPoint({super.key, required this.point, required this.onChangePoint, this.onDelete});
   @override
   State<ViewRowPoint> createState() => _ViewRowPointState();
 }
@@ -36,7 +37,7 @@ class _ViewRowPointState extends State<ViewRowPoint> {
               thickness: 1,
             ),
             Container(
-              width: size.width * 0.3 - 2,
+              width: size.width * 0.25 - 2,
               padding: const EdgeInsets.all(12),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -163,9 +164,91 @@ class _ViewRowPointState extends State<ViewRowPoint> {
               width: 1,
               color: AppColor.colorMain,
               thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.05 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Visibility(
+                visible: widget.point.pointRule != null && widget.point.pointRule != 0,
+                child: IconButton(
+                  onPressed: () {
+                    _showDeleteConfirmation(context);
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                  tooltip: "Xoá điểm",
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Text(
+          "Xác nhận xoá",
+          style: TextStyle(
+            color: Color(0xFFFF8F00),
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        content: const Text(
+          "Bạn có chắc chắn muốn xoá điểm này không?",
+          style: TextStyle(
+            color: Color(0xFFFF8F00),
+            fontSize: 14,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text(
+              "Huỷ",
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              widget.onDelete?.call();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF8F00),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text(
+              "Xoá",
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ],
       ),
     );
   }

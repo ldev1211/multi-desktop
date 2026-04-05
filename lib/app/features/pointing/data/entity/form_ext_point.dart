@@ -80,6 +80,18 @@ class _FormExtPointState extends State<FormExtPoint> {
                   setState(() {});
                   service.postPoint(body);
                 },
+                onDelete: () async {
+                  if (pointExt.pointExtId == null) return;
+                  Map<String, dynamic> body = {
+                    "pointExtId": pointExt.pointExtId,
+                  };
+                  await service.deletePoint(body);
+                  setState(() {
+                    pointExt.pointFinal = null;
+                    pointExt.pointSelf = null;
+                    pointExt.pointExtId = null;
+                  });
+                },
               );
             },
           ),
@@ -107,7 +119,7 @@ class _FormExtPointState extends State<FormExtPoint> {
               thickness: 1,
             ),
             Container(
-              width: size.width * 0.3 - 2,
+              width: size.width * 0.25 - 2,
               padding: const EdgeInsets.all(12),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -190,6 +202,20 @@ class _FormExtPointState extends State<FormExtPoint> {
               width: 1,
               color: AppColor.colorMain,
               thickness: 1,
+            ),
+            Container(
+              width: size.width * 0.05 - 1,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: const SizedBox(),
+            ),
+            const VerticalDivider(
+              width: 1,
+              color: AppColor.colorMain,
+              thickness: 1,
             )
           ],
         ),
@@ -203,7 +229,7 @@ class _FormExtPointState extends State<FormExtPoint> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: size.width * 0.3,
+          width: size.width * 0.25,
           height: 66,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(12),
@@ -277,9 +303,6 @@ class _FormExtPointState extends State<FormExtPoint> {
               right: BorderSide(color: AppColor.colorMain),
               top: BorderSide(color: AppColor.colorMain),
             ),
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(24),
-            ),
           ),
           child: const Text(
             "Chấm",
@@ -287,6 +310,32 @@ class _FormExtPointState extends State<FormExtPoint> {
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          width: size.width * 0.05,
+          height: 66,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(4),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: BorderSide(color: AppColor.colorMain),
+              right: BorderSide(color: AppColor.colorMain),
+              top: BorderSide(color: AppColor.colorMain),
+            ),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(24),
+            ),
+          ),
+          child: const Text(
+            "Xoá",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
           ),
         ),

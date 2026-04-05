@@ -35,6 +35,7 @@ class PointExt {
   int? parent;
   int? pointSelf;
   int? pointFinal;
+  int? pointExtId;
 
   PointExt({
     required this.id,
@@ -45,6 +46,7 @@ class PointExt {
     required this.parent,
     this.pointSelf,
     this.pointFinal,
+    this.pointExtId,
   });
 
   factory PointExt.fromJson(Map<String, dynamic> json) => PointExt(
@@ -56,6 +58,7 @@ class PointExt {
         parent: json["parent"],
         pointSelf: json["pointSelf"],
         pointFinal: json["pointFinal"],
+        pointExtId: json["pointExtId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,11 +70,12 @@ class PointExt {
         "parent": parent,
         "pointSelf": pointSelf,
         "pointFinal": pointFinal,
+        "pointExtId": pointExtId,
       };
 
   @override
   String toString() {
-    return 'PointExt{id: $id, stt: $stt, content: $content, pointRule: $pointRule, type: $type, parent: $parent, pointSelf: $pointSelf, pointFinal: $pointFinal}';
+    return 'PointExt{id: $id, stt: $stt, content: $content, pointRule: $pointRule, type: $type, parent: $parent, pointSelf: $pointSelf, pointFinal: $pointFinal, pointExtId: $pointExtId}';
   }
 }
 
