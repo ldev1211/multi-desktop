@@ -31,6 +31,12 @@ jobs:
       - name: Build Windows release
         run: flutter build windows --release
 
+      - name: Download Visual C++ Redistributable
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "vc_redist.x64.exe"
+          Write-Host "Downloaded VC++ Redistributable"
+
       - name: Create Inno Setup script
         shell: pwsh
         run: |
@@ -59,6 +65,7 @@ jobs:
           Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
           [Files]
+          Source: "vc_redist.x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
           Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
           [Icons]
@@ -66,6 +73,7 @@ jobs:
           Name: "{autodesktop}\Multi Desktop"; Filename: "{app}\multi_desktop.exe"; Tasks: desktopicon
 
           [Run]
+          Filename: "{tmp}\vc_redist.x64.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Runtime..."; Flags: waituntilterminated skipifsilent
           Filename: "{app}\multi_desktop.exe"; Description: "{cm:LaunchProgram,Multi Desktop}"; Flags: nowait postinstall skipifsilent
           "@
 
@@ -99,6 +107,7 @@ jobs:
             
             ### System Requirements
             - Windows 10 or later (64-bit)
+            - Visual C++ Runtime sẽ được tự động cài đặt khi chạy installer
           draft: false
           prerelease: false
           files: Output/*.exe
