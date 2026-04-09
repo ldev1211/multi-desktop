@@ -53,4 +53,13 @@ abstract class ApiService {
 
   @PUT('/stu_inf/update_new_class')
   Future<BaseResponse> updateNewClass();
+
+  @GET('/point_ext/get_positions')
+  Future<BaseResponse> getPositions();
+
+  @GET('/point_ext/get_all_students')
+  Future<BaseResponse> getAllStudents();
+
+  @PUT('/point_ext/update_position')
+  Future<BaseResponse> updatePosition(@Body() Map<String, dynamic> body);
 }

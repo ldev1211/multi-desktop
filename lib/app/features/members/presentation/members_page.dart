@@ -17,6 +17,7 @@ import 'package:multi_desktop/util/ui_util.dart';
 import 'package:open_dir/open_dir.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:multi_desktop/app/features/members/presentation/position_management_page.dart';
 
 class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
@@ -280,6 +281,27 @@ class _MembersPageState extends State<MembersPage> {
                                 message:
                                     "Bạn có chắc muốn tạo mới đợt chấm?\nĐều này sẽ khiến toàn bộ dữ liệu của đợt chấm trước bị mất đi.",
                               );
+                            },
+                          ),
+                        if ([3, 4].contains(PrefUtil.instance.getInt("role")))
+                          const SizedBox(width: 24),
+                        if ([3, 7].contains(PrefUtil.instance.getInt("role")))
+                          AppButton.buttonPrimary(
+                            height: 45,
+                            width: 250,
+                            text: "Quản lý chức vụ",
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PositionManagementPage(
+                                    classMembers: members,
+                                  ),
+                                ),
+                              ).then((value) {
+                                getMembers();
+                              });
                             },
                           ),
                       ],

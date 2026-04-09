@@ -6,8 +6,8 @@ import 'package:multi_desktop/network/route/apiservice.dart';
 import 'package:multi_desktop/util/pref/pref_utils.dart';
 
 late ApiService service;
-const String url = 'https://multi.ldevsolutions.vn/delegation_chief_role';
-// const String url = 'http://localhost/delegation_chief_role';
+// const String url = 'https://multi.ldevsolutions.vn/delegation_chief_role';
+const String url = 'http://localhost/delegation_chief_role';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
